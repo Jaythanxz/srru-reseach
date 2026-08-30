@@ -1,0 +1,38 @@
+services:
+  # Backend API & AI Engine Service
+  srru-backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: srru_research_backend
+    restart: always
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - JWT_SECRET=srru_super_secret_jwt_key_2024_graduation_thesis
+      - JWT_EXPIRES_IN=7d
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server/uploads:/app/uploads
+    networks:
+      - srru_network
+
+  # Frontend Client & Nginx Reverse Proxy Service
+  srru-frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: srru_research_frontend
+    restart: always
+    ports:
+      - "80:80"
+      - "5173:80"
+    depends_on:
+      - srru-backend
+    networks:
+      - srru_network
+
+networks:
+  srru_network:
+    driver: bridge
