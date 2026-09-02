@@ -44,7 +44,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['"IBM Plex Sans Thai"', 'Sarabun', '"Noto Sans Thai"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Sarabun"', 'sans-serif'],
       },
       lineHeight: {
         relaxed: '1.7',
