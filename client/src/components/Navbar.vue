@@ -98,10 +98,10 @@
               </span>
             </button>
 
-            <!-- Notification Dropdown Panel -->
+            <!-- Notification Dropdown Panel (Responsive: full width on mobile, anchored on desktop) -->
             <div
               v-if="isNotifOpen"
-              class="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-800 shadow-2xl z-50 overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150"
+              class="fixed left-3 right-3 top-16 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 rounded-2xl bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-800 shadow-2xl z-50 overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150"
             >
               <div class="p-3.5 bg-gradient-to-r from-purple-50 to-emerald-50 dark:from-purple-950/60 dark:to-emerald-950/40 border-b border-purple-100 dark:border-purple-900/50 flex items-center justify-between">
                 <div class="flex items-center gap-2">
@@ -174,16 +174,16 @@
                 {{ authStore.userName.charAt(0) || 'U' }}
               </div>
               <div class="text-left hidden sm:block">
-                <div class="font-bold text-slate-900 leading-tight">{{ authStore.userName }}</div>
-                <div class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide">{{ authStore.userRole }}</div>
+                <div class="font-bold text-slate-900 dark:text-white leading-tight">{{ authStore.userName }}</div>
+                <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">{{ authStore.userRole }}</div>
               </div>
               <svg class="w-3.5 h-3.5 text-purple-400 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
 
-            <!-- Dropdown Menu Box -->
+            <!-- Dropdown Menu Box (Responsive: centered on mobile, anchored on desktop) -->
             <div
               v-if="isMenuOpen"
-              class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-purple-100 dark:border-purple-900/60 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+              class="fixed left-4 right-4 top-16 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-72 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-purple-200 dark:border-purple-900/60 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
             >
               <div class="px-4 py-2 border-b border-purple-50 dark:border-purple-900/40 mb-1">
                 <p class="text-xs font-bold text-slate-900 dark:text-white">{{ authStore.userName }}</p>
