@@ -297,54 +297,106 @@
         </div>
       </div>
 
-      <!-- Mobile Navigation Drawer -->
-      <div v-if="isMobileDrawerOpen" class="md:hidden border-t border-purple-100 dark:border-purple-900/50 py-3 space-y-1 text-xs animate-in slide-in-from-top-2 duration-200">
+            <!-- Mobile Navigation Drawer (Full-Featured & Responsive) -->
+      <div v-if="isMobileDrawerOpen" class="md:hidden border-t border-purple-100 dark:border-purple-900/50 py-3 space-y-1.5 text-xs animate-in slide-in-from-top-2 duration-200">
         <router-link
           to="/"
           @click="isMobileDrawerOpen = false"
-          class="flex items-center gap-2 px-3 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-800"
+          class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50"
           active-class="!bg-purple-100/80 dark:!bg-purple-950/80 !text-purple-900 dark:!text-purple-200"
         >
-          <span>🏠</span>
           <span>หน้าแรก</span>
         </router-link>
 
         <router-link
           to="/search"
           @click="isMobileDrawerOpen = false"
-          class="flex items-center justify-between px-3 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-800"
+          class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50"
           active-class="!bg-purple-100/80 dark:!bg-purple-950/80 !text-purple-900 dark:!text-purple-200"
         >
-          <div class="flex items-center gap-2">
-            <span>🔍</span>
-            <span>สืบค้นงานวิจัย</span>
-          </div>
-          
+          <span>สืบค้นงานวิจัย</span>
         </router-link>
 
         <router-link
           to="/topic-generator"
           @click="isMobileDrawerOpen = false"
-          class="flex items-center justify-between px-3 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-800"
+          class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50"
           active-class="!bg-purple-100/80 dark:!bg-purple-950/80 !text-purple-900 dark:!text-purple-200"
         >
-          <div class="flex items-center gap-2">
-            <span>💡</span>
-            <span>AI คิดหัวข้อวิจัย</span>
-          </div>
-          
+          <span>คิดหัวข้อวิจัย</span>
+        </router-link>
+
+        <!-- My Submissions on Mobile -->
+        <router-link
+          v-if="authStore.isAuthenticated && (authStore.userRole === 'STUDENT' || authStore.userRole === 'ADMIN')"
+          to="/my-submissions"
+          @click="isMobileDrawerOpen = false"
+          class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50"
+          active-class="!bg-purple-100/80 dark:!bg-purple-950/80 !text-purple-900 dark:!text-purple-200"
+        >
+          <span>ผลงานของฉัน</span>
+          <span v-if="unreadCount > 0" class="px-2 py-0.5 text-[10px] bg-rose-500 text-white rounded-full font-bold">
+            {{ unreadCount }} งานต้องแก้ไข
+          </span>
         </router-link>
 
         <router-link
           v-if="authStore.isAuthenticated"
           to="/bookmarks"
           @click="isMobileDrawerOpen = false"
-          class="flex items-center gap-2 px-3 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-800"
+          class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-950/50"
           active-class="!bg-purple-100/80 dark:!bg-purple-950/80 !text-purple-900 dark:!text-purple-200"
         >
-          <span>🔖</span>
-          <span>งานวิจัยที่บันทึกไว้</span>
+          <span>ที่บันทึกไว้</span>
         </router-link>
+
+        <router-link
+          v-if="authStore.isStudent || authStore.isAdmin"
+          to="/submit"
+          @click="isMobileDrawerOpen = false"
+          class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300"
+        >
+          <span>ส่งผลงานวิจัยใหม่</span>
+          <span>➕</span>
+        </router-link>
+
+        <!-- Mobile User Profile & Quick Role Switcher -->
+        <div v-if="authStore.isAuthenticated" class="pt-2 border-t border-purple-100 dark:border-purple-900/50 mt-2 space-y-2">
+          <div class="px-3.5 flex items-center justify-between">
+            <span class="font-bold text-slate-800 dark:text-slate-200">{{ authStore.userName }}</span>
+            <span class="text-[10px] font-bold text-emerald-600 uppercase">{{ authStore.userRole }}</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 px-3 py-1">
+            <button
+              @click="switchRole('STUDENT')"
+              :class="['py-1.5 rounded-xl font-bold text-center text-xs transition-all', authStore.isStudent ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300']"
+            >
+              นักศึกษา
+            </button>
+            <button
+              @click="switchRole('TEACHER')"
+              :class="['py-1.5 rounded-xl font-bold text-center text-xs transition-all', authStore.isTeacher ? 'bg-purple-700 text-white shadow-xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300']"
+            >
+              อาจารย์
+            </button>
+            <button
+              @click="switchRole('ADMIN')"
+              :class="['py-1.5 rounded-xl font-bold text-center text-xs transition-all', authStore.isAdmin ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300']"
+            >
+              แอดมิน
+            </button>
+          </div>
+
+          <div class="px-3 pt-1">
+            <button
+              @click="handleLogout"
+              class="w-full py-2 rounded-xl text-rose-600 dark:text-rose-400 font-bold bg-rose-50 dark:bg-rose-950/40 text-center"
+            >
+              ออกจากระบบ
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
