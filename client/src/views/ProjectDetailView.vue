@@ -315,6 +315,35 @@
                 <span>ใบรับรองความซ้ำซ้อน</span>
               </button>
 
+              <!-- Audio Abstract TTS Player Trigger -->
+              <button
+                type="button"
+                @click="toggleAudioAbstract"
+                :class="[
+                  'px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs border',
+                  isSpeaking
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-400 shadow-md animate-pulse'
+                    : 'bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
+                ]"
+                :title="isSpeaking ? (isPaused ? 'กดเพื่อเล่นต่อ' : 'กดเพื่อหยุดชั่วคราว') : 'ฟังบทคัดย่อภาษาไทยด้วยเสียงสังเคราะห์ AI'"
+              >
+                <span>{{ isSpeaking ? (isPaused ? '▶️' : '⏸️') : '🔊' }}</span>
+                <span>{{ isSpeaking ? (isPaused ? 'เล่นต่อ' : 'หยุดฟังเสียง') : 'ฟังเสียง AI' }}</span>
+              </button>
+
+              <!-- QR Code Share Trigger -->
+              <button
+                type="button"
+                @click="openQrModal"
+                class="px-3.5 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/80 hover:bg-purple-100 dark:hover:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-bold border border-purple-200 dark:border-purple-800 transition-all flex items-center gap-1.5 shadow-2xs hover:scale-105"
+                title="สร้าง QR Code สแกนอ่านบนมือถือทันที"
+              >
+                <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                </svg>
+                <span>QR Code</span>
+              </button>
+
               <!-- Citation Generator Trigger -->
               <button
                 @click="showCitationModal = true"
@@ -687,6 +716,98 @@
       </div>
     </div>
 
+    <!-- 📱 Interactive QR Code Share Modal -->
+    <div v-if="showQrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-purple-200 dark:border-purple-800 max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 text-center relative overflow-hidden">
+        <!-- Ambient Glow -->
+        <div class="absolute -top-16 -right-16 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-purple-100 dark:border-purple-900/50 pb-3">
+          <div class="flex items-center gap-2 text-left">
+            <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-900/70 text-purple-700 dark:text-purple-300 flex items-center justify-center text-sm font-black">
+              📱
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 dark:text-white text-sm">QR Code แชร์ผลงานวิจัย</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">สแกนเปิดอ่านเล่มวิจัยฉบับเต็มบนสมาร์ตโฟน</p>
+            </div>
+          </div>
+          <button
+            @click="showQrModal = false"
+            class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white text-xs font-bold transition-colors flex items-center justify-center"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Project Title Banner -->
+        <div class="p-3 rounded-2xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/40 text-left space-y-1">
+          <span class="text-[10px] font-bold text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-900/60 inline-block">
+            {{ project?.faculty_name || 'มหาวิทยาลัยราชภัฏสุรินทร์' }}
+          </span>
+          <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-2 leading-snug">
+            {{ project?.title_th }}
+          </h4>
+        </div>
+
+        <!-- QR Code Canvas / Image Display -->
+        <div class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-inner">
+          <div v-if="qrCodeDataUrl" class="relative group">
+            <img
+              :src="qrCodeDataUrl"
+              alt="Research Project QR Code"
+              class="w-56 h-56 rounded-xl object-contain shadow-xs border border-slate-100 dark:border-slate-800"
+            />
+            <!-- Center SRRU Badge -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border-2 border-purple-600 shadow-md flex items-center justify-center">
+                <span class="text-[10px] font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-emerald-600">SRRU</span>
+              </div>
+            </div>
+          </div>
+          <div v-else class="w-56 h-56 flex items-center justify-center text-xs text-slate-400">
+            กำลังสร้าง QR Code...
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-medium">
+            ✨ รองรับกล้องมือถือ iOS & Android ทุกรุ่น
+          </p>
+        </div>
+
+        <!-- Actions: Download PNG & Copy Link -->
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <button
+            @click="downloadQrCodePng"
+            type="button"
+            class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-600 hover:to-purple-700 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>บันทึกรูป PNG</span>
+          </button>
+
+          <button
+            @click="copyProjectUrl"
+            type="button"
+            :class="[
+              'py-2.5 px-3 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 border',
+              copiedUrl
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700'
+            ]"
+          >
+            <svg v-if="!copiedUrl" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span>{{ copiedUrl ? 'คัดลอกแล้ว!' : 'คัดลอกลิงก์' }}</span>
+          </button>
+        </div>
+
+        <div class="text-[10px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl text-left border border-slate-200/60 dark:border-slate-800">
+          💡 <strong>คำแนะนำ:</strong> นำรูป QR Code นี้ไปพิมพ์แปะบนบอร์ดนิทรรศการ หรือหน้าแรกของเอกสารวิจัย เพื่อให้ผู้เข้าร่วมงานสแกนอ่านไฟล์ PDF ฉบับเต็มได้ทันที
+        </div>
+      </div>
+    </div>
+
     <!-- Official Redundancy Certificate Modal -->
     <RedundancyCertificateModal
       :is-open="showCertificateModal"
@@ -708,6 +829,7 @@ import api from '../services/api';
 import PDFViewer from '../components/PDFViewer.vue';
 import StatusBadge from '../components/StatusBadge.vue';
 import RedundancyCertificateModal from '../components/RedundancyCertificateModal.vue';
+import QRCode from 'qrcode';
 
 const showCertificateModal = ref(false);
 
@@ -1299,6 +1421,100 @@ const loadProjectData = async (id) => {
     console.error('Load project data failed:', err);
   }
 };
+
+// --- 📱 QR Code Share Feature ---
+const showQrModal = ref(false);
+const qrCodeDataUrl = ref('');
+const copiedUrl = ref(false);
+
+const openQrModal = async () => {
+  showQrModal.value = true;
+  copiedUrl.value = false;
+  try {
+    const currentUrl = window.location.href;
+    qrCodeDataUrl.value = await QRCode.toDataURL(currentUrl, {
+      width: 360,
+      margin: 2,
+      color: {
+        dark: '#3b0764',
+        light: '#ffffff'
+      }
+    });
+  } catch (err) {
+    console.error('QR Code generation error:', err);
+  }
+};
+
+const copyProjectUrl = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    copiedUrl.value = true;
+    setTimeout(() => {
+      copiedUrl.value = false;
+    }, 2500);
+  } catch (err) {
+    alert('คัดลอกลิงก์สำเร็จ: ' + window.location.href);
+  }
+};
+
+const downloadQrCodePng = () => {
+  if (!qrCodeDataUrl.value) return;
+  const link = document.createElement('a');
+  link.href = qrCodeDataUrl.value;
+  link.download = `QR_SRRU_${project.value?.project_id || 'thesis'}.png`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+// --- 🔊 AI Audio Abstract Text-to-Speech (TTS) ---
+const isPaused = ref(false);
+
+const toggleAudioAbstract = () => {
+  if (!('speechSynthesis' in window)) {
+    alert('ขออภัย เบราว์เซอร์นี้ยังไม่รองรับระบบสังเคราะห์เสียงอ่าน');
+    return;
+  }
+
+  if (isSpeaking.value) {
+    if (isPaused.value) {
+      window.speechSynthesis.resume();
+      isPaused.value = false;
+    } else {
+      window.speechSynthesis.pause();
+      isPaused.value = true;
+    }
+  } else {
+    window.speechSynthesis.cancel();
+    const text = `${project.value?.title_th || ''} บทคัดย่อ ${project.value?.abstract_text || ''}`;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'th-TH';
+    utterance.rate = 1.0;
+    utterance.onend = () => {
+      isSpeaking.value = false;
+      isPaused.value = false;
+    };
+    utterance.onerror = () => {
+      isSpeaking.value = false;
+      isPaused.value = false;
+    };
+    window.speechSynthesis.speak(utterance);
+    isSpeaking.value = true;
+    isPaused.value = false;
+  }
+};
+
+const stopAudioAbstract = () => {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  isSpeaking.value = false;
+  isPaused.value = false;
+};
+
+onUnmounted(() => {
+  stopAudioAbstract();
+});
 
 onMounted(() => {
   loadProjectData(route.params.id);

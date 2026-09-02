@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <!-- Background Shield -->
+  <rect width="64" height="64" rx="16" fill="url(#grad)"/>
+  <!-- Graduation Cap -->
+  <path d="M32 16L12 26L32 36L52 26L32 16Z" fill="#ffffff"/>
+  <path d="M20 31.5V41C20 45 25.37 48 32 48C38.63 48 44 45 44 41V31.5L32 37.5L20 31.5Z" fill="#f1f5f9"/>
+  <!-- Tassel -->
+  <path d="M47 28.5V40C47 41.5 45.5 42.5 44.5 41" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="44.5" cy="42.5" r="2" fill="#fbbf24"/>
+  <!-- AI Sparkle -->
+  <path d="M48 12L49.5 16.5L54 18L49.5 19.5L48 24L46.5 19.5L42 18L46.5 16.5L48 12Z" fill="#34d399"/>
+</svg>
