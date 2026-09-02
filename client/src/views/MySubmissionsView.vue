@@ -3,10 +3,7 @@
     <!-- Header Banner -->
     <div class="bg-gradient-to-r from-purple-100/80 via-white to-emerald-50/80 dark:from-[#1f103d] dark:via-[#140b29] dark:to-[#081f18] rounded-3xl p-6 sm:p-8 border border-purple-100/90 dark:border-purple-800/40 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
       <div class="space-y-2">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-purple-950/80 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300 text-xs font-bold shadow-2xs">
-          <span class="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
-          <span>Student Submissions & Revision Center</span>
-        </div>
+        
         <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
           ผลงานวิจัยของฉัน
         </h1>
@@ -20,7 +17,6 @@
           to="/submit"
           class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-700 to-emerald-600 hover:from-purple-600 hover:to-emerald-500 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-2 hover:scale-105"
         >
-          <span>➕</span>
           <span>ส่งผลงานใหม่</span>
         </router-link>
 
@@ -77,7 +73,7 @@
             : 'bg-white dark:bg-slate-800 text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50'
         ]"
       >
-        <span>⚠️ ส่งกลับแก้ไข</span>
+        <span>ส่งกลับแก้ไข</span>
         <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-200 font-black">
           {{ rejectedCount }}
         </span>
@@ -93,7 +89,7 @@
             : 'bg-white dark:bg-slate-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50'
         ]"
       >
-        <span>⏳ รอการตรวจสอบ</span>
+        <span>รอการตรวจสอบ</span>
         <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 font-black">
           {{ pendingCount }}
         </span>
@@ -109,7 +105,7 @@
             : 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50'
         ]"
       >
-        <span>✅ อนุมัติแล้ว</span>
+        <span>อนุมัติแล้ว</span>
         <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-black">
           {{ approvedCount }}
         </span>
@@ -163,7 +159,7 @@
                   : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200 border-amber-300 dark:border-amber-800'
               ]"
             >
-              <span>{{ item.status === 'REJECTED' ? '⚠️ ส่งกลับแก้ไข' : (item.status === 'APPROVED' ? '✅ อนุมัติแล้ว' : '⏳ รอการตรวจสอบ') }}</span>
+              <span>{{ item.status === 'REJECTED' ? 'ส่งกลับแก้ไข' : (item.status === 'APPROVED' ? 'อนุมัติแล้ว' : 'รอการตรวจสอบ') }}</span>
             </span>
 
             <span class="text-xs font-bold text-purple-700 dark:text-purple-300 px-2.5 py-1 rounded-lg bg-purple-50 dark:bg-purple-950/60 border border-purple-200/60 dark:border-purple-900">
@@ -223,28 +219,12 @@
               @click="openEditModal(item)"
               class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 hover:scale-105"
             >
-              <span>✏️</span>
               <span>แก้ไขข้อมูลและส่งใหม่อีกครั้ง</span>
             </button>
           </div>
         </div>
 
-        <!-- Approved Success Box -->
-        <div
-          v-else-if="item.status === 'APPROVED'"
-          class="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-between gap-3 text-xs text-emerald-800 dark:text-emerald-200"
-        >
-          <span class="flex items-center gap-1.5">
-            <span>🎉</span>
-            <span>ผลงานนี้ได้รับการอนุมัติเรียบร้อย และเผยแพร่สู่คลังงานวิจัยสาธารณะแล้ว</span>
-          </span>
-          <router-link
-            :to="`/projects/${item.project_id}`"
-            class="font-bold underline text-emerald-700 dark:text-emerald-300 hover:text-emerald-900"
-          >
-            ดูผลงานในคลัง →
-          </router-link>
-        </div>
+
 
         <!-- Bottom Actions Row -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs border-t border-slate-100 dark:border-slate-800">
@@ -259,14 +239,14 @@
               @click="openEditModal(item)"
               class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold transition-colors flex items-center gap-1"
             >
-              <span>✏️ แก้ไขข้อมูล</span>
+              <span>แก้ไขข้อมูล</span>
             </button>
 
             <router-link
               :to="`/projects/${item.project_id}`"
               class="px-3.5 py-1.5 rounded-xl bg-purple-700 hover:bg-purple-600 text-white font-bold transition-colors flex items-center gap-1"
             >
-              <span>📄 เปิดดูเล่มฉบับเต็ม</span>
+              <span>เปิดดูเล่มฉบับเต็ม</span>
             </router-link>
           </div>
         </div>

@@ -1,93 +1,54 @@
 <template>
   <div class="space-y-12 sm:space-y-16 pb-20">
-    <!-- Hero Banner & AI Smart Search (Royal SRRU Heritage - Light & Dark Ready) -->
-    <section class="relative overflow-hidden bg-gradient-to-b from-purple-100/70 via-white to-emerald-50/50 dark:from-[#1f103d] dark:via-[#140b29] dark:to-[#081f18] rounded-3xl mx-3 sm:mx-6 lg:mx-8 mt-4 border border-purple-100/90 dark:border-purple-800/40 shadow-xs transition-colors duration-300">
-      <!-- Subtle Ambient Glow -->
-      <div class="absolute -top-24 -left-24 w-80 h-80 bg-purple-200/40 dark:bg-purple-900/30 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-emerald-200/40 dark:bg-emerald-900/30 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="relative max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 text-center space-y-6 sm:space-y-8">
-        <!-- AI Badge -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-purple-950/80 border border-purple-200 dark:border-purple-800 text-purple-800 dark:text-purple-200 text-xs font-bold shadow-2xs">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>SRRU Digital Research Repository • AI & Dense Semantic Search</span>
-        </div>
-
-        <!-- Heading (High Contrast & Crystal Clear Readability) -->
-        <div class="space-y-3">
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-snug sm:leading-tight">
-            คลังโครงงานวิจัยบัณฑิตศึกษาและโปรเจกต์จบ<br />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-purple-800 to-emerald-600 dark:from-purple-400 dark:via-purple-300 dark:to-emerald-400">
-              มหาวิทยาลัยราชภัฏสุรินทร์
-            </span>
+    <!-- Hero Search Section (Ultra-Clean & Prominent) -->
+    <section class="bg-white dark:bg-slate-900 rounded-3xl mx-3 sm:mx-6 lg:mx-8 mt-4 border border-slate-200/80 dark:border-slate-800 shadow-xs transition-colors duration-300">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center space-y-6 sm:space-y-8">
+        <!-- Heading -->
+        <div class="space-y-2.5">
+          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+            คลังงานวิจัย มหาวิทยาลัยราชภัฏสุรินทร์
           </h1>
-          <p class="text-xs sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-            สืบค้นงานวิจัย วิทยานิพนธ์ และโปรเจกต์จบเชิงความหมาย (Dense Semantic Search) และระบบแนะนำอัจฉริยะด้วย Thai NLP
+          <p class="text-xs sm:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-normal">
+            สืบค้นวิทยานิพนธ์ รายงานการวิจัย และโครงงานนักศึกษา
           </p>
         </div>
 
-        <!-- Search Mode Toggle & Search Box -->
-        <div class="max-w-3xl mx-auto space-y-4">
-          <!-- Dual Search Mode Selector (Mobile Wrapped) -->
-          <div class="inline-flex flex-wrap items-center justify-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1 rounded-2xl text-xs shadow-2xs border border-transparent dark:border-purple-800/40">
-            <button
-              @click="searchMode = 'semantic'"
-              :class="[
-                'px-3.5 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5',
-                searchMode === 'semantic'
-                  ? 'bg-purple-800 dark:bg-purple-700 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              ]"
-            >
-              <span>🧠 ค้นหาเชิงความหมาย AI (Semantic Search)</span>
-              <span class="px-1.5 py-0.2 rounded bg-emerald-400 text-emerald-950 text-[10px] font-black">NEW</span>
-            </button>
-            <button
-              @click="searchMode = 'standard'"
-              :class="[
-                'px-3.5 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5',
-                searchMode === 'standard'
-                  ? 'bg-purple-800 dark:bg-purple-700 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              ]"
-            >
-              <span>🔍 ค้นหาคำสำคัญตรงตัว (Exact Keyword)</span>
-            </button>
-          </div>
-
-          <!-- Main Input Field with Predictive Dropdown -->
+        <!-- Prominent Centered Search Bar -->
+        <div class="max-w-2xl mx-auto">
           <div class="relative" ref="homeSearchContainerRef">
-            <form @submit.prevent="handleSearch" class="relative flex flex-col sm:flex-row items-stretch sm:items-center shadow-md rounded-2xl overflow-hidden bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-1.5 sm:p-2 border border-purple-200 dark:border-purple-800 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-400/20 transition-all gap-2 sm:gap-0">
-              <div class="hidden sm:flex pl-3 pr-2 text-purple-600 dark:text-purple-400 items-center">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <form
+              @submit.prevent="handleSearch"
+              class="relative flex items-center shadow-lg rounded-2xl overflow-hidden bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 p-2 sm:p-2.5 border border-slate-200 dark:border-slate-700 focus-within:border-purple-600 focus-within:ring-4 focus-within:ring-purple-500/10 transition-all gap-2"
+            >
+              <div class="pl-2.5 text-slate-400 dark:text-slate-500 flex items-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
               </div>
               <input
                 v-model="searchKeyword"
                 @focus="showHomeSuggestions = true"
                 type="text"
-                :placeholder="searchMode === 'semantic' ? 'พิมพ์ประโยคหรือหัวข้อที่สนใจ เช่น ปัญญาประดิษฐ์ทางการเกษตร, ผ้าไหมสุรินทร์...' : 'ค้นหาชื่อเรื่อง, คำสำคัญ (Keywords)...'"
-                class="w-full bg-transparent text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none px-3 py-2.5 sm:py-2"
+                placeholder="ค้นหาชื่อผลงาน, คำสำคัญ, คณะ หรือชื่ออาจารย์ที่ปรึกษา..."
+                class="w-full bg-transparent text-sm sm:text-base text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none px-2 py-1.5"
               />
               <button
                 type="submit"
-                class="px-6 py-2.5 sm:py-3 rounded-xl bg-purple-700 hover:bg-emerald-600 dark:bg-purple-600 dark:hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm shadow-xs transition-all whitespace-nowrap"
+                class="px-6 py-2.5 sm:py-3 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs sm:text-sm shadow-xs transition-all whitespace-nowrap"
               >
-                {{ searchMode === 'semantic' ? 'สืบค้น Semantic' : 'สืบค้น' }}
+                สืบค้น
               </button>
             </form>
 
-            <!-- 💡 Predictive Autocomplete & Direct Research Dropdown for Homepage (Matching Screenshot) -->
+            <!-- Autocomplete Suggestions Dropdown -->
             <div
               v-if="showHomeSuggestions && (matchingHomeProjects.length > 0 || filteredHomeSuggestions.length > 0 || homeRecentSearches.length > 0)"
               class="absolute left-0 right-0 top-full mt-1.5 bg-[#1e232d] text-white rounded-2xl border border-slate-700/80 shadow-2xl z-50 overflow-hidden text-xs text-left max-h-80 overflow-y-auto divide-y divide-slate-800/80"
             >
-              <!-- 1. Direct Matching Research Papers ("เอางานวิจัยขึ้นมาให้เลย") -->
+              <!-- 1. Matching Projects -->
               <div v-if="matchingHomeProjects.length > 0" class="p-2 space-y-1 bg-purple-950/20">
                 <div class="text-[10px] font-bold text-emerald-400 px-2.5 py-1 flex items-center justify-between">
-                  <span class="flex items-center gap-1.5">
-                    <span>📄</span>
-                    <span>งานวิจัยที่ตรงกับคำค้นหาทันที (คลิกเพื่อเปิดอ่าน):</span>
-                  </span>
+                  <span>ผลงานวิจัยที่ตรงกับคำค้นหา (คลิกเพื่อเปิดอ่าน):</span>
                   <span class="text-[10px] text-slate-400 font-normal">พบ {{ matchingHomeProjects.length }} เรื่อง</span>
                 </div>
                 <router-link
@@ -99,12 +60,11 @@
                 >
                   <div class="flex items-start justify-between gap-2">
                     <div class="space-y-0.5 flex-1">
-                      <div class="font-bold text-white group-hover:text-purple-300 text-xs line-clamp-1 flex items-center gap-1.5">
-                        <span class="text-sm">📑</span>
-                        <span>{{ paper.title_th }}</span>
+                      <div class="font-bold text-white group-hover:text-purple-300 text-xs line-clamp-1">
+                        {{ paper.title_th }}
                       </div>
                       <div class="text-[10px] text-slate-400 line-clamp-1 flex items-center gap-2">
-                        <span>👤 {{ paper.authors }}</span>
+                        <span>{{ paper.authors }}</span>
                         <span>•</span>
                         <span>{{ paper.faculty_name || 'มรภ.สุรินทร์' }}</span>
                         <span>•</span>
@@ -118,32 +78,23 @@
                 </router-link>
               </div>
 
-              <!-- 2. Predictive Search Keywords (เช่น 🔍 พดด้วง / 🔍 ข้าวหอมมะลิ) -->
+              <!-- 2. Suggestions -->
               <div v-if="filteredHomeSuggestions.length > 0" class="p-2 space-y-0.5">
-                <div class="text-[10px] font-bold text-slate-400 px-2.5 py-1 flex items-center gap-1">
-                  <span>🔍</span>
-                  <span>คำแนะนำการค้นหา:</span>
-                </div>
+                <div class="text-[10px] font-bold text-slate-400 px-2.5 py-1">คำแนะนำการค้นหา:</div>
                 <button
                   v-for="(item, idx) in filteredHomeSuggestions"
                   :key="idx"
                   @click="applyHomeSearch(item)"
                   class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 hover:text-white text-xs flex items-center justify-between transition-colors group"
                 >
-                  <span class="flex items-center gap-2">
-                    <span class="text-slate-400 text-xs">🔍</span>
-                    <span class="font-medium group-hover:text-purple-300">{{ item }}</span>
-                  </span>
+                  <span class="font-medium group-hover:text-purple-300">{{ item }}</span>
                   <span class="text-[10px] text-slate-500 group-hover:text-slate-300">สืบค้น ↵</span>
                 </button>
               </div>
 
               <!-- 3. Recent Searches -->
               <div v-if="homeRecentSearches.length > 0" class="p-2 space-y-1">
-                <div class="text-[10px] font-bold text-slate-400 px-2.5 py-1 flex items-center gap-1">
-                  <span>🕒</span>
-                  <span>ประวัติการค้นหาล่าสุด:</span>
-                </div>
+                <div class="text-[10px] font-bold text-slate-400 px-2.5 py-1">ประวัติการค้นหาล่าสุด:</div>
                 <div class="flex flex-wrap gap-1.5 px-2 py-1">
                   <button
                     v-for="(recent, rIdx) in homeRecentSearches"
@@ -158,37 +109,37 @@
             </div>
           </div>
 
-          <!-- Quick Trending Tags -->
-          <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-xs text-slate-600 dark:text-slate-400">
-            <span class="font-bold text-slate-800 dark:text-slate-200">หัวข้อยอดนิยม:</span>
+          <!-- Clean Trending Tags -->
+          <div class="flex flex-wrap items-center justify-center gap-2 pt-3 text-xs text-slate-500 dark:text-slate-400">
+            <span>คำค้นหายอดนิยม:</span>
             <button
               v-for="tag in trendingTags"
               :key="tag"
               @click="searchByTag(tag)"
-              class="px-2.5 py-1 rounded-full bg-white dark:bg-slate-900 hover:bg-purple-50 dark:hover:bg-purple-950 text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-white border border-purple-200 dark:border-purple-800 transition-colors shadow-2xs text-[11px] font-medium"
+              class="hover:text-purple-700 dark:hover:text-purple-300 hover:underline transition-colors"
             >
-              #{{ tag }}
+              {{ tag }}
             </button>
           </div>
         </div>
 
-        <!-- Quick Stats Banner (Clean Light & Dark Cards) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-purple-100 dark:border-purple-800/40">
-          <div class="p-3.5 sm:p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-100 dark:border-purple-800/60 shadow-2xs">
-            <div class="text-xl sm:text-2xl font-black text-purple-800 dark:text-purple-400">7+</div>
-            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">คณะและวิทยาลัย</div>
+        <!-- Clean Stats Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="text-xl sm:text-2xl font-black text-purple-800 dark:text-purple-300">7+</div>
+            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">คณะและสำนัก</div>
           </div>
-          <div class="p-3.5 sm:p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-100 dark:border-purple-800/60 shadow-2xs">
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
             <div class="text-xl sm:text-2xl font-black text-emerald-700 dark:text-emerald-400">100%</div>
-            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">เอกสารฉบับเต็ม (PDF)</div>
+            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">เอกสารฉบับเต็ม (PDF)</div>
           </div>
-          <div class="p-3.5 sm:p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-100 dark:border-purple-800/60 shadow-2xs">
-            <div class="text-xl sm:text-2xl font-black text-purple-800 dark:text-purple-400">WangchanBERTa</div>
-            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">Dense Semantic Search</div>
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="text-xl sm:text-2xl font-black text-purple-800 dark:text-purple-300">Semantic</div>
+            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">สืบค้นเชิงความหมาย</div>
           </div>
-          <div class="p-3.5 sm:p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-100 dark:border-purple-800/60 shadow-2xs">
-            <div class="text-xl sm:text-2xl font-black text-emerald-700 dark:text-emerald-400">0.86</div>
-            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">ความแม่นยำ AI (Precision)</div>
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+            <div class="text-xl sm:text-2xl font-black text-emerald-700 dark:text-emerald-400">Open Access</div>
+            <div class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">เข้าถึงงานวิจัยได้ทันที</div>
           </div>
         </div>
       </div>
