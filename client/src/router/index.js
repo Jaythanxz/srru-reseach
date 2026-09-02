@@ -44,6 +44,7 @@ const routes = [
   },
   {
     path: '/teacher/review',
+    alias: '/teacher-review',
     name: 'teacher-review',
     component: TeacherReviewView,
     meta: { requiresAuth: true, roles: ['TEACHER', 'ADMIN'], title: 'ระบบตรวจสอบและอนุมัติผลงาน' }

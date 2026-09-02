@@ -265,12 +265,13 @@ async function createProject(req, res) {
     }
 
     const submittedBy = req.user ? req.user.user_id : 4;
+    const initialStatus = (req.user && req.user.role === 'ADMIN') ? 'APPROVED' : 'PENDING';
 
     const result = await query(
       `INSERT INTO research_projects (
         title_th, title_en, abstract_text, keywords, authors, advisor_name,
         faculty_id, department_id, publish_year, project_type, pdf_file_path, cover_image_path, author_image_path, status, submitted_by
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'APPROVED', ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title_th,
         title_en || '',
@@ -285,14 +286,16 @@ async function createProject(req, res) {
         pdfFilePath,
         coverImagePath,
         authorImagePath,
+        initialStatus,
         submittedBy
       ]
     );
 
     return res.status(201).json({
       success: true,
-      message: 'ส่งผลงานวิจัยเข้าสู่ระบบสำเร็จ พร้อมเผยแพร่และสืบค้นได้ทันที (APPROVED)',
+      message: initialStatus === 'APPROVED' ? 'ส่งผลงานวิจัยเข้าสู่ระบบสำเร็จ' : 'ส่งผลงานวิจัยเข้าสู่ระบบสำเร็จ รออาจารย์ที่ปรึกษาตรวจพิจารณา',
       projectId: result.insertId,
+      data: { project_id: result.insertId },
       cover_image_path: coverImagePath,
       author_image_path: authorImagePath
     });
