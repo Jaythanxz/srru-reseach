@@ -1,14 +1,21 @@
 <template>
   <div class="space-y-12 sm:space-y-16 pb-20">
     <!-- Hero Search Section (Ultra-Clean & Prominent) -->
-    <section class="bg-white dark:bg-slate-900 rounded-3xl mx-3 sm:mx-6 lg:mx-8 mt-4 border border-slate-200/80 dark:border-slate-800 shadow-xs transition-colors duration-300">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center space-y-6 sm:space-y-8">
-        <!-- Heading -->
-        <div class="space-y-2.5">
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
-            คลังงานวิจัย มหาวิทยาลัยราชภัฏสุรินทร์
+    <section class="relative overflow-hidden bg-gradient-to-b from-purple-100/80 via-white to-emerald-50/60 dark:from-[#1f103d] dark:via-[#140b29] dark:to-[#081f18] rounded-3xl mx-3 sm:mx-6 lg:mx-8 mt-4 border border-purple-100/90 dark:border-purple-800/40 shadow-xs transition-colors duration-300">
+      <!-- Subtle Ambient Glow -->
+      <div class="absolute -top-24 -left-24 w-80 h-80 bg-purple-200/50 dark:bg-purple-900/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-emerald-200/40 dark:bg-emerald-900/30 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center space-y-6 sm:space-y-8">
+        <!-- Heading with Royal SRRU Gradient -->
+        <div class="space-y-3">
+          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-snug sm:leading-tight">
+            คลังงานวิจัยและโปรเจกต์จบ<br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-purple-800 to-emerald-600 dark:from-purple-400 dark:via-purple-300 dark:to-emerald-400">
+              มหาวิทยาลัยราชภัฏสุรินทร์
+            </span>
           </h1>
-          <p class="text-xs sm:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-normal">
+          <p class="text-xs sm:text-base text-slate-600 dark:text-slate-300 max-w-xl mx-auto font-normal leading-relaxed">
             สืบค้นวิทยานิพนธ์ รายงานการวิจัย และโครงงานนักศึกษา
           </p>
         </div>
