@@ -276,22 +276,15 @@
         </div>
       </section>
 
-      <!-- Section 1: AI Hybrid Recommendation Grid -->
+            <!-- Section 1: Research Recommendation Grid -->
       <section class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-purple-100 dark:border-purple-800/40 pb-4">
           <div>
-            <div class="flex items-center gap-2 text-purple-700 dark:text-purple-300 text-xs font-bold uppercase tracking-wider mb-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-              <span>Personalized For You</span>
-            </div>
-            <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 flex-wrap">
-              <span>งานวิจัยแนะนำสำหรับคุณ</span>
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-200 border border-purple-200 dark:border-purple-800">
-                Hybrid AI (0.6 CB + 0.4 CF)
-              </span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+              งานวิจัยแนะนำสำหรับคุณ
             </h2>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-light">
-              วิเคราะห์จากความคล้ายคลึงของเนื้อหาบทคัดย่อ (Thai NLP TF-IDF) ผสานประวัติการเข้าชมและบุ๊กมาร์ก
+              คัดสรรผลงานวิจัยที่น่าสนใจและตรงกับความสนใจของคุณ
             </p>
           </div>
 

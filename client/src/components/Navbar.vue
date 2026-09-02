@@ -30,20 +30,18 @@
 
           <router-link
             to="/search"
-            class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-purple-700 dark:hover:text-purple-400 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 transition-colors flex items-center gap-1.5"
+            class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-purple-700 dark:hover:text-purple-400 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 transition-colors"
             active-class="!text-purple-800 dark:!text-purple-300 !bg-purple-50 dark:!bg-purple-950/60 !font-bold"
           >
-            <span>สืบค้นงานวิจัย</span>
-            <span class="px-1.5 py-0.2 text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded font-bold border border-emerald-200 dark:border-emerald-800">AI Search</span>
+            สืบค้นงานวิจัย
           </router-link>
 
           <router-link
             to="/topic-generator"
-            class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-purple-700 dark:hover:text-purple-400 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 transition-colors flex items-center gap-1.5"
+            class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-purple-700 dark:hover:text-purple-400 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 transition-colors"
             active-class="!text-purple-800 dark:!text-purple-300 !bg-purple-50 dark:!bg-purple-950/60 !font-bold"
           >
-            <span>💡 คิดหัวข้อวิจัย</span>
-            <span class="px-1.5 py-0.2 text-[9px] bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded font-bold border border-purple-200 dark:border-purple-700">AI PROPOSAL</span>
+            คิดหัวข้อวิจัย
           </router-link>
 
           <!-- My Submissions Link for Students -->
@@ -53,8 +51,8 @@
             class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-purple-700 dark:hover:text-purple-400 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 transition-colors flex items-center gap-1.5"
             active-class="!text-purple-800 dark:!text-purple-300 !bg-purple-50 dark:!bg-purple-950/60 !font-bold"
           >
-            <span>📂 ผลงานของฉัน</span>
-            <span v-if="unreadCount > 0" class="px-1.5 py-0.2 text-[9px] bg-rose-500 text-white rounded-full font-bold animate-pulse">
+            <span>ผลงานของฉัน</span>
+            <span v-if="unreadCount > 0" class="px-1.5 py-0.2 text-[10px] bg-rose-500 text-white rounded-full font-bold">
               {{ unreadCount }}
             </span>
           </router-link>
@@ -71,37 +69,33 @@
 
         <!-- Right Side: Theme Toggle + User Profile Dropdown Menu & Mobile Hamburger -->
         <div class="flex items-center gap-2 sm:gap-3 relative">
-          <!-- ☀️ / 🌙 Theme Toggle Button (Light / Dark Switcher) -->
+          <!-- ☀️ / 🌙 Theme Toggle Icon Button -->
           <button
             type="button"
             @click="themeStore.toggleTheme"
-            class="p-2 sm:px-3 sm:py-1.5 rounded-2xl bg-purple-50 dark:bg-slate-900 hover:bg-purple-100 dark:hover:bg-slate-800 border border-purple-200/80 dark:border-purple-800/80 text-slate-700 dark:text-purple-200 transition-all flex items-center gap-1.5 shadow-2xs group"
+            class="w-9 h-9 rounded-2xl bg-purple-50 dark:bg-slate-900 hover:bg-purple-100 dark:hover:bg-slate-800 border border-purple-200/80 dark:border-purple-800/80 text-slate-700 dark:text-purple-200 transition-all flex items-center justify-center shadow-2xs group"
             :title="themeStore.isDark ? 'สลับเป็นโหมดสว่าง (Light Mode)' : 'สลับเป็นโหมดมืด (Dark Mode)'"
           >
             <span class="text-sm transition-transform duration-300 group-hover:rotate-45">
               {{ themeStore.isDark ? '🌙' : '☀️' }}
             </span>
-            <span class="text-[11px] font-bold hidden lg:inline-block">
-              {{ themeStore.isDark ? 'โหมดมืด' : 'โหมดสว่าง' }}
-            </span>
           </button>
 
-          <!-- 🔔 Student & Faculty Notification Bell -->
+          <!-- 🔔 Student & Faculty Notification Bell Icon Button -->
           <div v-if="authStore.isAuthenticated" class="relative" ref="notifRef">
             <button
               type="button"
               @click="isNotifOpen = !isNotifOpen"
-              class="p-2 sm:px-3 sm:py-1.5 rounded-2xl bg-purple-50 dark:bg-slate-900 hover:bg-purple-100 dark:hover:bg-slate-800 border border-purple-200/80 dark:border-purple-800/80 text-slate-700 dark:text-purple-200 transition-all flex items-center gap-1.5 shadow-2xs relative group"
+              class="w-9 h-9 rounded-2xl bg-purple-50 dark:bg-slate-900 hover:bg-purple-100 dark:hover:bg-slate-800 border border-purple-200/80 dark:border-purple-800/80 text-slate-700 dark:text-purple-200 transition-all flex items-center justify-center shadow-2xs relative group"
               title="การแจ้งเตือนผลการตรวจประเมิน"
             >
               <span class="text-sm">🔔</span>
               <span
                 v-if="unreadCount > 0"
-                class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white rounded-full text-[10px] font-black flex items-center justify-center border-2 border-white dark:border-slate-950 animate-bounce"
+                class="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 bg-rose-500 text-white rounded-full text-[9px] font-black flex items-center justify-center border-2 border-white dark:border-slate-950 animate-bounce"
               >
                 {{ unreadCount }}
               </span>
-              <span class="text-[11px] font-bold hidden md:inline-block">แจ้งเตือน</span>
             </button>
 
             <!-- Notification Dropdown Panel -->
@@ -325,7 +319,7 @@
             <span>🔍</span>
             <span>สืบค้นงานวิจัย</span>
           </div>
-          <span class="px-1.5 py-0.2 text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded font-bold">AI Search</span>
+          
         </router-link>
 
         <router-link
@@ -338,7 +332,7 @@
             <span>💡</span>
             <span>AI คิดหัวข้อวิจัย</span>
           </div>
-          <span class="px-1.5 py-0.2 text-[10px] bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded font-bold">PROPOSAL</span>
+          
         </router-link>
 
         <router-link
