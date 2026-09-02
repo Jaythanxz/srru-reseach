@@ -9,7 +9,7 @@
       <div class="relative max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center space-y-6 sm:space-y-8">
         <!-- Heading with Royal SRRU Gradient -->
         <div class="space-y-3">
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-snug sm:leading-tight">
+          <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-normal text-slate-900 dark:text-white leading-relaxed sm:leading-normal">
             คลังงานวิจัยและโปรเจกต์จบ<br />
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-purple-800 to-emerald-600 dark:from-purple-400 dark:via-purple-300 dark:to-emerald-400">
               มหาวิทยาลัยราชภัฏสุรินทร์
@@ -116,16 +116,16 @@
             </div>
           </div>
 
-          <!-- Clean Trending Tags -->
+          <!-- Clean Elegant Trending Chips with Proper Spacing -->
           <div class="flex flex-wrap items-center justify-center gap-2 pt-3 text-xs text-slate-500 dark:text-slate-400">
-            <span>คำค้นหายอดนิยม:</span>
+            <span class="font-medium text-slate-400 dark:text-slate-500">คำค้นหายอดนิยม:</span>
             <button
               v-for="tag in trendingTags"
               :key="tag"
               @click="searchByTag(tag)"
-              class="hover:text-purple-700 dark:hover:text-purple-300 hover:underline transition-colors"
+              class="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-800/90 border border-purple-200/70 dark:border-purple-800/60 text-purple-800 dark:text-purple-300 hover:bg-purple-100/80 dark:hover:bg-purple-900/50 hover:border-purple-300 transition-all shadow-2xs text-[11px] font-medium hover:scale-105"
             >
-              {{ tag }}
+              #{{ tag }}
             </button>
           </div>
         </div>
