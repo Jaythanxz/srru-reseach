@@ -355,31 +355,139 @@ async function getSimilarProjects(projectId, topN = 4) {
  */
 async function generateThesisTopicProposals({ faculty_id, department_id, keywords, degree_level }) {
   try {
-    const kw = (keywords || '').trim();
+    const rawKw = (keywords || '').trim();
+    const kw = rawKw.toLowerCase();
     const isMaster = degree_level === 'MASTER' || degree_level === 'DOCTORAL';
 
-    // Faculty & Advisor Knowledge
+    // Faculty & Advisor Knowledge Base
     const advisorsByFaculty = {
-      1: ['รศ.ดร.ประสิทธิ์ สุรินทร์พิทักษ์', 'ผศ.ดร.วรัญญา จันทรเกษตร', 'อ.ดร.สุรศักดิ์ ดิจิทัล'],
-      2: ['ผศ.ดร.กิตติศักดิ์ พัฒนาการ', 'รศ.สุดารัตน์ พืชศาสตร์', 'อ.ดร.สมชาย สมาร์ตฟาร์ม'],
-      3: ['ผศ.ดร.พิมพ์ใจ บริหารธุรกิจ', 'รศ.ดร.อนุชา การตลาดดิจิทัล', 'อ.ดร.นภัสสร พาณิชย์'],
-      4: ['รศ.ดร.สมศักดิ์ นวัตกรรมการศึกษา', 'ผศ.ดร.ศิริพร คอมพิวเตอร์ศึกษา', 'อ.ดร.ธนกฤต วิทยวิธี'],
-      5: ['ผศ.ดร.อัมพร มนุษยศาสตร์', 'รศ.ดร.ประยงค์ ชุมชนอีสานใต้', 'อ.ดร.มงคล สหวิทยาการ'],
-      6: ['ผศ.ดร.วิชัย เทคโนโลยีอุตสาหกรรม', 'รศ.ดร.ชนาธิป วิศวกรรมระบบ', 'อ.ดร.ธวัชชัย IoT'],
-      7: ['ผศ.ดร.สายใจ พยาบาลศาสตร์', 'รศ.ดร.นงลักษณ์ สุขภาพชุมชน', 'อ.ดร.ปิยะพร เวชสารสนเทศ']
+      1: ['รศ.ดร.ประสิทธิ์ สุรินทร์พิทักษ์ (วิทยาการคอมพิวเตอร์)', 'ผศ.ดร.วรัญญา จันทรเกษตร (เทคโนโลยีสารสนเทศ)', 'อ.ดร.สุรศักดิ์ ดิจิทัล (ปัญญาประดิษฐ์)'],
+      2: ['ผศ.ดร.กิตติศักดิ์ พัฒนาการ (พืชศาสตร์)', 'รศ.สุดารัตน์ พืชศาสตร์ (เกษตรอินทรีย์)', 'อ.ดร.สมชาย สมาร์ตฟาร์ม (เทคโนโลยีการเกษตร)'],
+      3: ['ผศ.ดร.พิมพ์ใจ บริหารธุรกิจ (การจัดการ)', 'รศ.ดร.อนุชา การตลาดดิจิทัล (การตลาด)', 'อ.ดร.นภัสสร พาณิชย์ (พาณิชย์อิเล็กทรอนิกส์)'],
+      4: ['รศ.ดร.สมศักดิ์ นวัตกรรมการศึกษา (หลักสูตรและการสอน)', 'ผศ.ดร.ศิริพร คอมพิวเตอร์ศึกษา (เทคโนโลยีการศึกษา)', 'อ.ดร.ธนกฤต วิทยวิธี (การวัดผลการศึกษา)'],
+      5: ['ผศ.ดร.อัมพร มนุษยศาสตร์ (สังคมวิทยาและมานุษยวิทยา)', 'รศ.ดร.ประยงค์ ชุมชนอีสานใต้ (ประวัติศาสตร์และวัฒนธรรม)', 'อ.ดร.มงคล สหวิทยาการ (จิตวิทยาประยุกต์)'],
+      6: ['ผศ.ดร.วิชัย เทคโนโลยีอุตสาหกรรม (วิศวกรรมการผลิต)', 'รศ.ดร.ชนาธิป วิศวกรรมระบบ (ระบบควบคุมและอัตโนมัติ)', 'อ.ดร.ธวัชชัย IoT (วิศวกรรมพลังงาน)'],
+      7: ['ผศ.ดร.สายใจ พยาบาลศาสตร์ (การพยาบาลชุมชน)', 'รศ.ดร.นงลักษณ์ สุขภาพชุมชน (สาธารณสุขศาสตร์)', 'อ.ดร.ปิยะพร เวชสารสนเทศ (สารสนเทศสุขภาพ)']
     };
 
-    const advisors = advisorsByFaculty[faculty_id] || ['ผศ.ดร.ประสิทธิ์ สุรินทร์พิทักษ์', 'รศ.ดร.กิตติศักดิ์ พัฒนาการ'];
+    const facultyKey = parseInt(faculty_id) || 1;
+    const advisors = advisorsByFaculty[facultyKey] || advisorsByFaculty[1];
 
-    // Template generators tailored to Surin & modern technology
     let proposals = [];
 
-    if (kw.includes('ข้าว') || kw.includes('เกษตร') || faculty_id == 2) {
+    // =========================================================================
+    // 1. DOMAIN: น้ำมัน / เชื้อเพลิง / พลังงานทดแทน / สิ่งแวดล้อม
+    // =========================================================================
+    if (kw.includes('น้ำมัน') || kw.includes('เชื้อเพลิง') || kw.includes('ไบโอดีเซล') || kw.includes('พลังงาน') || kw.includes('เอทานอล') || kw.includes('โซลาร์') || kw.includes('แบตเตอรี่')) {
       proposals = [
         {
           id: 1,
-          title_th: `การประยุกต์ใช้โมเดล Deep Learning ร่วมกับภาพถ่ายโดรนเพื่อตรวจจับโรคใบไหม้และคาดการณ์ผลผลิตข้าวหอมมะลิทุ่งกุลาร้องไห้`,
-          title_en: `Application of Deep Learning Models with Drone Imagery for Rice Blast Disease Detection and Yield Prediction in Thung Kula Ronghai`,
+          title_th: 'การพัฒนาระบบตรวจสอบคุณภาพและความบริสุทธิ์ของน้ำมันไบโอดีเซลชุมชนด้วยการประมวลผลสเปกโทรสโกปีและ Machine Learning',
+          title_en: 'Development of Quality and Purity Inspection System for Community Biodiesel using Spectroscopy Processing and Machine Learning',
+          objectives: [
+            'เพื่อออกแบบชุดเซนเซอร์และวิเคราะห์ค่าความหนืดและค่าความเป็นกรด-ด่างของน้ำมันพืชใช้แล้วที่นำมาแปรรูปเป็นไบโอดีเซล',
+            'เพื่อสร้างโมเดล Machine Learning ในการจำแนกเกรดมาตรฐานน้ำมันเชื้อเพลิงชีวภาพตามเกณฑ์กรมธุรกิจพลังงาน',
+            'เพื่อส่งเสริมการผลิตพลังงานทดแทนและลดต้นทุนเชื้อเพลิงสำหรับเครื่องจักรกลการเกษตรในท้องถิ่นสุรินทร์'
+          ],
+          recommended_tech: 'Spectroscopy Sensor, Arduino/ESP32, Python Scikit-learn, Random Forest Classifier',
+          dataset_plan: 'ตัวอย่างน้ำมันพืชใช้แล้วและน้ำมันไบโอดีเซลจากกลุ่มวิสาหกิจชุมชนพลังงานทดแทนในจังหวัดสุรินทร์ 150 ตัวอย่าง',
+          suggested_advisor: advisors[0],
+          originality_score: 95,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 2,
+          title_th: 'ระบบตรวจจับการรั่วไหลและบริหารจัดการการใช้น้ำมันเชื้อเพลิงในยานยนต์ขนส่งสินค้าเกษตรด้วยเซนเซอร์ IoT และคลาวด์เทเลเมติกส์',
+          title_en: 'IoT-Based Fuel Leakage Detection and Fleet Consumption Management System for Agricultural Logistics using Cloud Telematics',
+          objectives: [
+            'เพื่อพัฒนาอุปกรณ์ IoT ตรวจวัดระดับน้ำมันเชื้อเพลิงและพฤติกรรมการสิ้นเปลืองแบบเรียลไทม์',
+            'เพื่อพัฒนาระบบแจ้งเตือนความผิดปกติและการสูญหายของน้ำมันผ่านแอปพลิเคชันมือถือ',
+            'เพื่อเพิ่มประสิทธิภาพการบริหารจัดการต้นทุนโลจิสติกส์การเกษตรในจังหวัดสุรินทร์'
+          ],
+          recommended_tech: 'Ultrasonic Fuel Level Sensor, ESP32 GSM/GPS Module, Node.js MQTT, Vue 3 Telematics Dashboard',
+          dataset_plan: 'ข้อมูลอัตราการสิ้นเปลืองน้ำมันจริงจากรถบรรทุกกลุ่มสหกรณ์การเกษตรสุรินทร์ 20 คัน ในระยะเวลา 3 เดือน',
+          suggested_advisor: advisors[1] || advisors[0],
+          originality_score: 92,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 3,
+          title_th: 'การศึกษาเปรียบเทียบประสิทธิภาพเชิงความร้อนและการปล่อยไอเสียของน้ำมันดีเซลผสมสารสกัดชีวภาพในเครื่องยนต์การเกษตรขนาดเล็ก',
+          title_en: 'Comparative Study on Thermal Efficiency and Exhaust Emissions of Biodiesel Blends in Small Agricultural Engines',
+          objectives: [
+            'เพื่อทดสอบสมรรถนะของเครื่องยนต์ดีเซลสูบเดียวที่ใช้น้ำมันสูตรผสมไบโอดีเซลจากน้ำมันพืชใช้แล้วในอัตราส่วนต่าง ๆ',
+            'เพื่อวิเคราะห์ปริมาณการปล่อยก๊าซคาร์บอนมอนอกไซด์และควันดำตามมาตรฐานสิ่งแวดล้อม',
+            'เพื่อกำหนดสูตรผสมน้ำมันเชื้อเพลิงชีวภาพที่เหมาะสมและคุ้มค่าที่สุดสำหรับการใช้งานในระดับฟาร์ม'
+          ],
+          recommended_tech: 'Engine Dynamometer, Exhaust Gas Analyzer, MATLAB/Simulink, Statistical Analysis SPSS',
+          dataset_plan: 'ผลการทดสอบรอบเครื่องยนต์ กำลังม้า และค่าวิเคราะห์ไอเสียตามมาตรฐานสากล 50 รอบการทดสอบ',
+          suggested_advisor: advisors[2] || advisors[0],
+          originality_score: 89,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        }
+      ];
+    }
+    // =========================================================================
+    // 2. DOMAIN: จิตวิทยา / ความสัมพันธ์ / แฟน / คู่รัก / สุขภาพจิต / วัยรุ่น
+    // =========================================================================
+    else if (kw.includes('แฟน') || kw.includes('รัก') || kw.includes('สัมพันธ์') || kw.includes('คู่รัก') || kw.includes('จิตวิทยา') || kw.includes('ความเครียด') || kw.includes('ซึมเศร้า') || kw.includes('วัยรุ่น')) {
+      proposals = [
+        {
+          id: 1,
+          title_th: 'การพัฒนาระบบคัดกรองและประเมินสุขภาวะทางอารมณ์จากปัญหาความสัมพันธ์ของนักศึกษาด้วยการประมวลผลภาษาธรรมชาติ (NLP)',
+          title_en: 'Development of Emotional Wellbeing Screening System for University Students Relationship Stress using Natural Language Processing',
+          objectives: [
+            'เพื่อศึกษาปัจจัยและระดับความเครียดที่เกิดจากปัญหาความสัมพันธ์และการปรับตัวของนักศึกษาในรั้วมหาวิทยาลัย',
+            'เพื่อสร้างโมเดล NLP ในการวิเคราะห์ข้อความสะท้อนอารมณ์และตรวจจับสัญญาณภาวะวิตกกังวลเบื้องต้น',
+            'เพื่อพัฒนาระบบส่งต่อคำแนะนำไปยังอาจารย์แนะแนวและศูนย์สุขภาวะทางจิตอย่างปลอดภัยและรักษาความลับ'
+          ],
+          recommended_tech: 'WangchanBERTa / PyTorch, FastAPI, Vue.js, AES-256 Encryption, PostgreSQL',
+          dataset_plan: 'แบบประเมินสุขภาวะทางอารมณ์ (DASS-21) และข้อความสะท้อนความรู้สึกจากกลุ่มตัวอย่างนักศึกษา มรภ.สุรินทร์ 400 คน',
+          suggested_advisor: advisors[0],
+          originality_score: 96,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 2,
+          title_th: 'ปัจจัยเชิงจิตวิทยาสังคมและพฤติกรรมการสื่อสารผ่านสื่อสังคมออนไลน์ที่มีผลต่อความพึงพอใจในความสัมพันธ์ของคู่รักวัยรุ่น',
+          title_en: 'Psychosocial Factors and Social Media Communication Behaviors Affecting Relationship Satisfaction among Young Couples',
+          objectives: [
+            'เพื่อสำรวจรูปแบบการสื่อสารและความคาดหวังในความสัมพันธ์ผ่านแพลตฟอร์มดิจิทัลของคนรุ่นใหม่',
+            'เพื่อวิเคราะห์อิทธิพลของความไว้วางใจและการเปรียบเทียบทางสังคมต่อความยั่งยืนของความสัมพันธ์',
+            'เพื่อจัดทำคู่มือและข้อเสนอแนะเชิงนโยบายในการส่งเสริมความสัมพันธ์เชิงบวกและสุขภาวะทางจิตในกลุ่มเยาวชน'
+          ],
+          recommended_tech: 'Structural Equation Modeling (SEM), SPSS / AMOS, Web-based Survey Platform',
+          dataset_plan: 'ข้อมูลแบบสอบถามจากกลุ่มวัยรุ่นและนักศึกษาในเขตพื้นที่จังหวัดสุรินทร์และบุรีรัมย์ จำนวน 450 ชุด',
+          suggested_advisor: advisors[1] || advisors[0],
+          originality_score: 91,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 3,
+          title_th: 'แช็ตบอตอัจฉริยะเพื่อให้คำปรึกษาเชิงจิตวิทยาเบื้องต้นและการสื่อสารสันติวิธีเพื่อส่งเสริมความเข้าใจในความสัมพันธ์ (AI Relationship Counselor)',
+          title_en: 'Intelligent Conversational AI for Positive Psychological Guidance and Nonviolent Communication in Relationships',
+          objectives: [
+            'เพื่อพัฒนาระบบสนทนาอัตโนมัติที่ประยุกต์ใช้หลักการจิตวิทยาการปรึกษาและการฟังอย่างเข้าใจ (Active Listening)',
+            'เพื่อแนะนำเทคนิคการสื่อสารลดความขัดแย้งและการจัดการอารมณ์เมื่อเผชิญสถานการณ์ตึงเครียดในความสัมพันธ์',
+            'เพื่อประเมินความพึงพอใจและประสิทธิผลในการลดความเครียดของผู้ใช้งาน'
+          ],
+          recommended_tech: 'Retrieval-Augmented Generation (RAG), LangChain, HuggingFace Transformers, Flutter Mobile App',
+          dataset_plan: 'ชุดบทสนทนาสถานการณ์จำลองและแนวทางการให้คำปรึกษาที่ผ่านการตรวจสอบโดยผู้เชี่ยวชาญด้านจิตวิทยาคลินิก',
+          suggested_advisor: advisors[2] || advisors[0],
+          originality_score: 94,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        }
+      ];
+    }
+    // =========================================================================
+    // 3. DOMAIN: เกษตร / ข้าว / ดิน / สมาร์ตฟาร์ม / อาหาร
+    // =========================================================================
+    else if (kw.includes('ข้าว') || kw.includes('เกษตร') || kw.includes('ดิน') || kw.includes('ปุ๋ย') || kw.includes('สมาร์ตฟาร์ม') || faculty_id == 2) {
+      proposals = [
+        {
+          id: 1,
+          title_th: 'การประยุกต์ใช้โมเดล Deep Learning ร่วมกับภาพถ่ายโดรนเพื่อตรวจจับโรคใบไหม้และคาดการณ์ผลผลิตข้าวหอมมะลิทุ่งกุลาร้องไห้',
+          title_en: 'Application of Deep Learning Models with Drone Imagery for Rice Blast Disease Detection and Yield Prediction in Thung Kula Ronghai',
           objectives: [
             'เพื่อพัฒนาระบบตรวจจับโรคใบไหม้ในข้าวหอมมะลิด้วยโครงข่าย Convolutional Neural Network (CNN)',
             'เพื่อสร้างแบบจำลองคาดการณ์ปริมาณผลผลิตข้าวต่อไร่จากภาพถ่ายหลายช่วงคลื่น (Multispectral Drone Imagery)',
@@ -393,8 +501,8 @@ async function generateThesisTopicProposals({ faculty_id, department_id, keyword
         },
         {
           id: 2,
-          title_th: `ระบบบริหารจัดการแปลงเกษตรอัจฉริยะแบบผสมผสานด้วย IoT และระบบพยากรณ์ความต้องการธาตุอาหารในดินตามแนวทาง BCG Economy`,
-          title_en: `Integrated Smart Farm Management System using IoT and Soil Nutrient Forecasting Model based on BCG Economy`,
+          title_th: 'ระบบบริหารจัดการแปลงเกษตรอัจฉริยะแบบผสมผสานด้วย IoT และระบบพยากรณ์ความต้องการธาตุอาหารในดินตามแนวทาง BCG Economy',
+          title_en: 'Integrated Smart Farm Management System using IoT and Soil Nutrient Forecasting Model based on BCG Economy',
           objectives: [
             'เพื่อออกแบบและติดตั้งเซนเซอร์วัดค่า NPK ความชื้น และสภาพภูมิอากาศในแปลงเพาะปลูก',
             'เพื่อพัฒนาระบบวิเคราะห์และแนะนำสูตรปุ๋ยอินทรีย์สั่งตัดผ่านโมเดล Machine Learning',
@@ -408,8 +516,8 @@ async function generateThesisTopicProposals({ faculty_id, department_id, keyword
         },
         {
           id: 3,
-          title_th: `แพลตฟอร์มดิจิทัลตรวจสอบย้อนกลับแหล่งกำเนิดและมาตรฐานข้าวอินทรีย์สุรินทร์ด้วยเทคโนโลยีบล็อกเชน (Traceability Blockchain Platform)`,
-          title_en: `Digital Traceability Platform for Surin Organic Rice Certification using Blockchain Technology`,
+          title_th: 'แพลตฟอร์มดิจิทัลตรวจสอบย้อนกลับแหล่งกำเนิดและมาตรฐานข้าวอินทรีย์สุรินทร์ด้วยเทคโนโลยีบล็อกเชน (Traceability Blockchain Platform)',
+          title_en: 'Digital Traceability Platform for Surin Organic Rice Certification using Blockchain Technology',
           objectives: [
             'เพื่อพัฒนาระบบบันทึกข้อมูลห่วงโซ่อุปทานข้าวอินทรีย์ตั้งแต่แปลงนาจนถึงบรรจุภัณฑ์',
             'เพื่อสร้างระบบ Smart Contract ตรวจสอบการรับรองมาตรฐาน Organic Thailand และ GI สุรินทร์',
@@ -422,42 +530,46 @@ async function generateThesisTopicProposals({ faculty_id, department_id, keyword
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         }
       ];
-    } else if (kw.includes('ผ้าไหม') || kw.includes('ตลาด') || kw.includes('หัตถกรรม') || faculty_id == 3) {
+    }
+    // =========================================================================
+    // 4. DOMAIN: ผ้าไหม / หัตถกรรม / ท่องเที่ยว / วัฒนธรรม
+    // =========================================================================
+    else if (kw.includes('ผ้าไหม') || kw.includes('ไหม') || kw.includes('หัตถกรรม') || kw.includes('ท่องเที่ยว') || kw.includes('ช้าง') || faculty_id == 3 || faculty_id == 5) {
       proposals = [
         {
           id: 1,
-          title_th: `ระบบจำแนกลวดลายผ้าไหมโบราณสุรินทร์และระบบแนะนำสินค้าตามอัตลักษณ์ผู้บริโภคด้วย Vision Transformer และ AI Recommender`,
-          title_en: `Surin Ancient Silk Pattern Classification and Personalized Recommender System using Vision Transformer and AI`,
+          title_th: 'ระบบจำแนกลวดลายผ้าไหมโบราณสุรินทร์และระบบแนะนำสินค้าตามอัตลักษณ์ผู้บริโภคด้วย Vision Transformer และ AI Recommender',
+          title_en: 'Surin Ancient Silk Pattern Classification and Personalized Recommender System using Vision Transformer and AI',
           objectives: [
             'เพื่อสร้างชุดข้อมูลภาพดิจิทัลลายผ้าไหมมัดหมี่สุรินทร์ (ลายอัมปรม, ลายอันลูนซีม, ลายโฮล)',
-            'เพื่อพัฒนาโมเดล Vision Transformer (ViT) ในการจำแนกลวดลายและประเมินระดับความละเอียดของฝีมือช่างทอ',
+            'เพื่อพัฒนาโมเดล Vision Transformer (ViT) ในการจำแนกลวดลายและประเมินระดับความประณีตของช่างทอ',
             'เพื่อพัฒนาระบบแนะนำผลิตภัณฑ์ผ้าไหมที่ตรงกับบุคลิกและความสนใจของผู้ซื้อ'
           ],
-          recommended_tech: 'Vision Transformer (ViT), PyTorch, Hybrid Recommender (CB+CF), Vue 3 TailwindCSS',
-          dataset_plan: 'ชุดภาพถ่ายผ้าไหมแท้จากกลุ่มทอผ้าไหมบ้านท่าสว่างและช่างทอชั้นครู 2,000 ภาพ',
+          recommended_tech: 'PyTorch Vision Transformer, FastAPI, Tailwind CSS, ChromaDB Vector Store',
+          dataset_plan: 'ภาพถ่ายลวดลายผ้าไหมแท้จากศูนย์หม่อนไหมเฉลิมพระเกียรติฯ สุรินทร์ และหมู่บ้านท่าสว่าง 1,200 ภาพ',
           suggested_advisor: advisors[0],
           originality_score: 98,
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         },
         {
           id: 2,
-          title_th: `การพัฒนาระบบการตลาดดิจิทัลแบบ Augmented Reality (AR) สำหรับทดลองสวมใส่ชุดผ้าไหมเสมือนจริงเพื่อส่งเสริมการท่องเที่ยวเชิงวัฒนธรรม`,
-          title_en: `Development of Augmented Reality (AR) Virtual Try-On System for Surin Silk Garments to Promote Cultural Tourism`,
+          title_th: 'แอปพลิเคชันส่งเสริมการท่องเที่ยวเชิงวัฒนธรรมและเส้นทางสายไหมสุรินทร์ด้วยเทคโนโลยีความเป็นจริงเสริม (AR Virtual Silk Tour)',
+          title_en: 'Cultural Tourism and Surin Silk Heritage Route Promotion Application using Augmented Reality',
           objectives: [
-            'เพื่อสร้างโมเดล 3 มิติของชุดผ้าไหมสุรินทร์ที่มีความสมจริงของพื้นผิวและทิศทางแสง',
-            'เพื่อพัฒนาแอปพลิเคชัน Virtual Try-on ให้ผู้ใช้งานทดลองสวมใส่ผ่านกล้องสมาร์ตโฟน',
-            'เพื่อวัดประสิทธิผลต่อยอดการสั่งซื้อและความพึงพอใจของนักท่องเที่ยวชาวไทยและต่างชาติ'
+            'เพื่อออกแบบเส้นทางท่องเที่ยวเชิงวัฒนธรรมเชื่อมโยงแหล่งทอผ้าไหมและโบราณสถานในจังหวัดสุรินทร์',
+            'เพื่อพัฒนาแอปพลิเคชัน AR จำลองขั้นตอนการสาวไหม ย้อมสีธรรมชาติ และให้ผู้ใช้ทดลองสวมใส่ผ้าไหมเสมือนจริง',
+            'เพื่อประเมินผลกระทบทางเศรษฐกิจและการเพิ่มรายได้ให้แก่ชุมชนท่องเที่ยว OTOP นวัตวิถี'
           ],
           recommended_tech: 'Unity 3D, ARKit / ARCore, Three.js, Blender 3D Shaders',
-          dataset_plan: 'สัดส่วนร่างกาย 3 มิติและชุดผ้าไหมทรงไทยประยุกต์ 20 รูปแบบ',
+          dataset_plan: 'โมเดล 3 มิติของลวดลายผ้าไหมและข้อมูลพิกัดสถานที่ท่องเที่ยวเชิงวัฒนธรรม 15 จุดในจังหวัดสุรินทร์',
           suggested_advisor: advisors[1] || advisors[0],
           originality_score: 93,
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         },
         {
           id: 3,
-          title_th: `โมเดลคาดการณ์แนวโน้มความต้องการและกลยุทธ์การตั้งราคาผลิตภัณฑ์หัตถกรรมชุมชนบนแพลตฟอร์มพาณิชย์อิเล็กทรอนิกส์ด้วย Machine Learning`,
-          title_en: `Demand Forecasting and Dynamic Pricing Strategy Model for Community Handicrafts on E-Commerce Platforms using Machine Learning`,
+          title_th: 'โมเดลคาดการณ์แนวโน้มความต้องการและกลยุทธ์การตั้งราคาผลิตภัณฑ์หัตถกรรมชุมชนบนแพลตฟอร์มพาณิชย์อิเล็กทรอนิกส์ด้วย Machine Learning',
+          title_en: 'Demand Forecasting and Dynamic Pricing Strategy Model for Community Handicrafts on E-Commerce Platforms using Machine Learning',
           objectives: [
             'เพื่อวิเคราะห์ปัจจัยที่มีผลต่อการตัดสินใจซื้อผลิตภัณฑ์ผ้าไหมและเครื่องเงินสุรินทร์บนช่องทางออนไลน์',
             'เพื่อสร้างโมเดล Machine Learning ในการพยากรณ์ยอดขายตามฤดูกาลและเทศกาลท่องเที่ยว',
@@ -470,56 +582,164 @@ async function generateThesisTopicProposals({ faculty_id, department_id, keyword
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         }
       ];
-    } else {
-      // Dynamic Synthesis for ANY Custom Keyword / Field
-      const rawKw = kw || 'ระบบสารสนเทศและการประยุกต์ใช้นวัตกรรมดิจิทัล';
-      const cleanKw = rawKw.replace(/[,\s]+/g, ' ').trim();
-      const firstKw = cleanKw.split(' ')[0] || 'นวัตกรรมดิจิทัล';
-
+    }
+    // =========================================================================
+    // 5. DOMAIN: การศึกษา / โรงเรียน / การเรียนการสอน / ครู
+    // =========================================================================
+    else if (kw.includes('ครู') || kw.includes('นักเรียน') || kw.includes('สอน') || kw.includes('บทเรียน') || kw.includes('เกม') || kw.includes('สอบ') || kw.includes('การศึกษา') || faculty_id == 4) {
+      const topicContext = rawKw || 'วิทยาการคำนวณและเทคโนโลยีดิจิทัล';
       proposals = [
         {
           id: 1,
-          title_th: `การพัฒนา${cleanKw}ด้วยปัญญาประดิษฐ์และการประมวลผลข้อมูลอัจฉริยะเพื่อยกระดับประสิทธิภาพการทำงาน`,
-          title_en: `Development of ${firstKw} using Artificial Intelligence and Intelligent Data Processing for Efficiency Enhancement`,
+          title_th: `การพัฒนาสื่อการเรียนรู้เสมือนจริงแบบมีปฏิสัมพันธ์ (Interactive Virtual Learning) เพื่อส่งเสริมทักษะการคิดวิเคราะห์ในเรื่อง${topicContext}`,
+          title_en: `Development of Interactive Virtual Learning Media to Enhance Analytical Thinking Skills in ${topicContext}`,
           objectives: [
-            `เพื่อศึกษาปัญหาและออกแบบสถาปัตยกรรมระบบสำหรับ ${cleanKw}`,
-            `เพื่อพัฒนาและทดสอบโมเดลการประมวลผลข้อมูลที่เหมาะสมกับบริบทของ ${cleanKw}`,
-            `เพื่อประเมินความแม่นยำและวัดผลความพึงพอใจของกลุ่มผู้ใช้งานในมหาวิทยาลัยราชภัฏสุรินทร์`
+            `เพื่อออกแบบและพัฒนาสื่อการเรียนรู้แบบดิจิทัลในเนื้อหาเกี่ยวกับ ${topicContext}`,
+            `เพื่อเปรียบเทียบผลสัมฤทธิ์ทางการเรียนก่อนและหลังเรียนของนักเรียนที่ใช้สื่อการเรียนรู้เสมือนจริง`,
+            `เพื่อประเมินความพึงพอใจและเจตคติต่อการเรียนรู้ของผู้เรียน`
           ],
-          recommended_tech: 'Python, PyTorch / TensorFlow, FastAPI, Vue.js, TailwindCSS, PostgreSQL',
-          dataset_plan: `ชุดข้อมูลจริงที่เกี่ยวข้องกับ ${cleanKw} จากพื้นที่จังหวัดสุรินทร์และเครือข่ายความร่วมมือทางวิชาการ`,
+          recommended_tech: 'Three.js, WebGL, Vue 3, SCORM Compliant LMS, Tailwind CSS',
+          dataset_plan: 'แบบทดสอบวัดผลสัมฤทธิ์ทางการเรียนและกลุ่มตัวอย่างนักเรียนในโรงเรียนสังกัด สพฐ. จังหวัดสุรินทร์ 80 คน',
           suggested_advisor: advisors[0],
-          originality_score: 96,
+          originality_score: 94,
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         },
         {
           id: 2,
-          title_th: `การประยุกต์ใช้โมบายแอปพลิเคชันและเทคโนโลยีคลาวด์สำหรับ${cleanKw}แบบเรียลไทม์เพื่อชุมชนท้องถิ่น`,
-          title_en: `Application of Mobile Application and Cloud Technology for Real-Time ${firstKw} in Local Communities`,
+          title_th: `ระบบประเมินและวิเคราะห์ผลการเรียนรู้เฉพาะบุคคลด้วยปัญญาประดิษฐ์ (AI Personalized Learning Assessment) สำหรับ${topicContext}`,
+          title_en: `Personalized Learning Assessment and Analytics System using Artificial Intelligence for ${topicContext}`,
           objectives: [
-            `เพื่อพัฒนาระบบให้บริการ ${cleanKw} ผ่าน Mobile/Web Application ที่เข้าถึงง่าย`,
-            `เพื่อเชื่อมโยงระบบฐานข้อมูลบนคลาวด์และการแจ้งเตือนอัตโนมัติ (Push Notification)`,
-            `เพื่อส่งเสริมการพึ่งพาตนเองด้านดิจิทัลและการนำไปใช้ประโยชน์เชิงพื้นที่ในจังหวัดสุรินทร์`
+            `เพื่อพัฒนาระบบวินิจฉัยจุดแข็งและจุดที่ต้องพัฒนาของผู้เรียนเป็นรายบุคคลในรายวิชา ${topicContext}`,
+            `เพื่อสร้างแบบจำลอง AI แนะนำแบบฝึกหัดและบทเรียนเสริมตามระดับความสามารถของผู้เรียน`,
+            `เพื่อจัดทำแดชบอร์ดสรุปผลการจัดการเรียนรู้สำหรับครูผู้สอนเพื่อใช้ปรับปรุงแผนการสอน`
           ],
-          recommended_tech: 'Flutter / React Native, Node.js REST API, Firebase / Cloud Firestore, Redis',
-          dataset_plan: `ข้อมูลกลุ่มตัวอย่างผู้ใช้บริการและเคสทดสอบการใช้งานจริงจำนวน 100-200 ตัวอย่าง`,
+          recommended_tech: 'Python FastAPI, Scikit-learn, Chart.js, Express REST API, PostgreSQL',
+          dataset_plan: 'ผลการทำแบบฝึกหัดและพฤติกรรมการเรียนรู้ย้อนหลัง 1 ภาคการศึกษา',
           suggested_advisor: advisors[1] || advisors[0],
           originality_score: 93,
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         },
         {
           id: 3,
-          title_th: `ระบบวิเคราะห์ข้อมูลเชิงลึกและพยากรณ์แนวโน้มความสำเร็จของ${cleanKw}ด้วย Machine Learning`,
-          title_en: `In-depth Analytics and Predictive Success Model for ${firstKw} using Machine Learning`,
+          title_th: `การจัดการเรียนรู้แบบผสมผสานโดยใช้เกมเป็นฐาน (Gamified Blended Learning) เพื่อยกระดับแรงจูงใจในการศึกษาเรื่อง${topicContext}`,
+          title_en: `Gamified Blended Learning Approach to Enhance Study Motivation in ${topicContext}`,
           objectives: [
-            `เพื่อสกัดปัจจัยสำคัญและตัวชี้วัดที่มีผลต่อความสำเร็จของ ${cleanKw}`,
-            `เพื่อสร้างโมเดล Machine Learning ในการพยากรณ์แนวโน้มและจำแนกกลุ่มข้อมูล`,
-            `เพื่อจัดทำ Dashboard รายงานผลแบบสรุปภาพรวม (Executive Dashboard) สำหรับผู้บริหาร`
+            `เพื่อสร้างชุดกิจกรรมการเรียนรู้แบบมีองค์ประกอบของเกม (Badges, Points, Leaderboards) ในวิชา ${topicContext}`,
+            `เพื่อศึกษาความคงทนในการจำและความเข้าใจในบทเรียนของผู้เรียน`,
+            `เพื่อประเมินระดับการมีส่วนร่วมในชั้นเรียนและความพึงพอใจของนักเรียน`
           ],
-          recommended_tech: 'Scikit-Learn, XGBoost, Streamlit / Chart.js, Pandas, Apache Superset',
-          dataset_plan: `ข้อมูลสถิติและผลการดำเนินงานย้อนหลัง 3 ปี ของหน่วยงานและชุมชนในจังหวัดสุรินทร์`,
+          recommended_tech: 'Phaser.js, Node.js Socket.io, Vue 3, MongoDB',
+          dataset_plan: 'คะแนนการเข้าร่วมกิจกรรมและแบบวัดแรงจูงใจทางการเรียนของกลุ่มตัวอย่าง',
+          suggested_advisor: advisors[2] || advisors[0],
+          originality_score: 90,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        }
+      ];
+    }
+    // =========================================================================
+    // 6. DOMAIN: สุขภาพ / พยาบาล / สาธารณสุข / ผู้สูงอายุ
+    // =========================================================================
+    else if (kw.includes('สุขภาพ') || kw.includes('พยาบาล') || kw.includes('ผู้สูงอายุ') || kw.includes('ยา') || kw.includes('เบาหวาน') || kw.includes('ความดัน') || faculty_id == 7) {
+      const healthContext = rawKw || 'สุขภาวะและการดูแลสุขภาพชุมชน';
+      proposals = [
+        {
+          id: 1,
+          title_th: `ระบบเฝ้าระวังและติดตามสุขภาพผู้สูงอายุในชุมชนแบบทางไกล (Telehealth Remote Monitoring System) สำหรับ${healthContext}`,
+          title_en: `Telehealth Remote Monitoring and Care System for Community Elderly in ${healthContext}`,
+          objectives: [
+            `เพื่อพัฒนาแพลตฟอร์มบันทึกค่าสัญญาณชีพและประวัติสุขภาพที่เชื่อมโยงกับโรงพยาบาลส่งเสริมสุขภาพตำบล (รพ.สต.)`,
+            `เพื่อสร้างระบบแจ้งเตือนความเสี่ยงฉุกเฉินอัตโนมัติไปยังญาติและอาสาสมัครสาธารณสุขประจำหมู่บ้าน (อสม.)`,
+            `เพื่อประเมินความพึงพอใจและประสิทธิผลในการลดอัตราการเกิดภาวะแทรกซ้อนในกลุ่มผู้สูงอายุสุรินทร์`
+          ],
+          recommended_tech: 'Flutter Mobile App, Bluetooth BLE Medical Sensors, Node.js REST API, LINE Messaging API',
+          dataset_plan: 'ข้อมูลสุขภาพและค่าความดันโลหิตของผู้สูงอายุกลุ่มเป้าหมายในพื้นที่ 100 คน',
+          suggested_advisor: advisors[0],
+          originality_score: 96,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 2,
+          title_th: `การประยุกต์ใช้ Machine Learning ในการคัดกรองความเสี่ยงโรคเรื้อรังและระบบแนะนำพฤติกรรมสุขภาพเฉพาะบุคคลในพื้นที่ชนบท`,
+          title_en: `Application of Machine Learning for Chronic Disease Risk Screening and Personalized Health Coaching in Rural Areas`,
+          objectives: [
+            `เพื่อสร้างแบบจำลองพยากรณ์ความเสี่ยงต่อการเกิดโรคไม่ติดต่อเรื้อรัง (NCDs) จากพฤติกรรมการบริโภคและการใช้ชีวิต`,
+            `เพื่อพัฒนาระบบแนะนำเมนูอาหารและกิจกรรมทางกายที่สอดคล้องกับวิถีชีวิตท้องถิ่นอีสานใต้`,
+            `เพื่อศึกษาการเปลี่ยนแปลงค่าดัชนีมวลกายและระดับน้ำตาลในเลือดของผู้เข้าร่วมโครงการ`
+          ],
+          recommended_tech: 'Python Scikit-learn, XGBoost, Vue 3, FastAPI, SQLite / PostgreSQL',
+          dataset_plan: 'ข้อมูลการตรวจคัดกรองสุขภาพประจำปีของประชาชนในอำเภอเมืองสุรินทร์ 500 รายการ',
+          suggested_advisor: advisors[1] || advisors[0],
+          originality_score: 93,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 3,
+          title_th: `แอปพลิเคชันส่งเสริมสุขภาวะและการฟื้นฟูสมรรถภาพทางกายสำหรับผู้ป่วยระยะพักฟื้นด้วยโปรแกรมกายภาพบำบัดเสมือนจริง`,
+          title_en: `Health Promotion and Physical Rehabilitation Application for Convalescent Patients using Virtual Physical Therapy`,
+          objectives: [
+            `เพื่อออกแบบท่าบริหารกายภาพบำบัดที่ปลอดภัยและเหมาะสมตามหลักวิชาชีพพยาบาลและกายภาพบำบัด`,
+            `เพื่อพัฒนาระบบตรวจจับท่าทางการเคลื่อนไหวผ่านกล้องสมาร์ตโฟนด้วย AI Pose Estimation`,
+            `เพื่อประเมินความสม่ำเสมอในการฟื้นฟูร่างกายและระดับความพึงพอใจของผู้ป่วย`
+          ],
+          recommended_tech: 'MediaPipe Pose Estimation, TensorFlow.js, React Native, Firebase',
+          dataset_plan: 'บันทึกการฝึกปฏิบัติท่าทางกายภาพบำบัดและผลการประเมินโดยนักกายภาพบำบัดวิชาชีพ',
           suggested_advisor: advisors[2] || advisors[0],
           originality_score: 91,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        }
+      ];
+    }
+    // =========================================================================
+    // 7. DYNAMIC SYNTHESIS: สำหรับคำค้นหาอื่น ๆ ทุกประเภท (ใช้ไวยากรณ์วิชาการสมบูรณ์แบบ)
+    // =========================================================================
+    else {
+      const cleanKw = rawKw ? rawKw.replace(/[,s]+/g, ' ').trim() : 'นวัตกรรมดิจิทัลเพื่อการพัฒนาท้องถิ่น';
+      const firstKw = cleanKw.split(' ')[0];
+
+      proposals = [
+        {
+          id: 1,
+          title_th: `การออกแบบและพัฒนาระบบสารสนเทศอัจฉริยะเพื่อสนับสนุนการจัดการด้าน${cleanKw}ในบริบทท้องถิ่น`,
+          title_en: `Design and Development of an Intelligent Information System Supporting ${firstKw} Operations in Local Context`,
+          objectives: [
+            `เพื่อศึกษาปัญหาและขั้นตอนการดำเนินงานที่เกี่ยวข้องกับ ${cleanKw} ในพื้นที่ศึกษา`,
+            `เพื่อออกแบบและพัฒนาระบบเว็บแอปพลิเคชันที่รองรับการบันทึก การประมวลผล และการออกรายงานแบบอัตโนมัติ`,
+            `เพื่อประเมินประสิทธิภาพของระบบและความพึงพอใจของกลุ่มผู้ใช้งานในมหาวิทยาลัยราชภัฏสุรินทร์`
+          ],
+          recommended_tech: 'Vue 3, Node.js Express, Tailwind CSS, PostgreSQL, RESTful APIs',
+          dataset_plan: `ข้อมูลการปฏิบัติงานจริงและแบบสอบถามความพึงพอใจจากกลุ่มตัวอย่างที่เกี่ยวข้องกับ ${cleanKw} จำนวน 100 ชุด`,
+          suggested_advisor: advisors[0],
+          originality_score: 95,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 2,
+          title_th: `การวิเคราะห์ปัจจัยเชิงลึกและแบบจำลองพยากรณ์แนวโน้มการเปลี่ยนแปลงที่เกี่ยวข้องกับ${cleanKw}ด้วยเทคนิคการทำเหมืองข้อมูล`,
+          title_en: `In-Depth Factor Analysis and Predictive Trend Modeling Related to ${firstKw} using Data Mining Techniques`,
+          objectives: [
+            `เพื่อรวบรวมและจัดเตรียมชุดข้อมูลสถิติที่เกี่ยวข้องกับ ${cleanKw} ย้อนหลัง`,
+            `เพื่อสร้างแบบจำลอง Machine Learning ในการจำแนกประเภทและพยากรณ์แนวโน้มในอนาคต`,
+            `เพื่อจัดทำข้อเสนอแนะเชิงกลยุทธ์สำหรับการวางแผนและการตัดสินใจของผู้บริหาร`
+          ],
+          recommended_tech: 'Python Pandas, Scikit-learn, XGBoost, Streamlit Dashboard, Chart.js',
+          dataset_plan: `ข้อมูลสถิติตัวเลขและการสำรวจพฤติกรรมที่เกี่ยวข้องกับ ${cleanKw} ย้อนหลัง 2-3 ปี`,
+          suggested_advisor: advisors[1] || advisors[0],
+          originality_score: 92,
+          degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
+        },
+        {
+          id: 3,
+          title_th: `การศึกษาแนวทางการประยุกต์ใช้นวัตกรรมดิจิทัลเพื่อเพิ่มมูลค่าและการจัดการองค์ความรู้ด้าน${cleanKw}อย่างยั่งยืน`,
+          title_en: `Study on Digital Innovation Application for Value Addition and Sustainable Knowledge Management of ${firstKw}`,
+          objectives: [
+            `เพื่อศึกษาบริบทและสำรวจองค์ความรู้ดั้งเดิมที่มีอยู่ในด้าน ${cleanKw}`,
+            `เพื่อพัฒนานวัตกรรมดิจิทัลหรือแพลตฟอร์มต้นแบบที่ช่วยยกระดับการเผยแพร่และการเข้าถึงข้อมูล`,
+            `เพื่อถ่ายทอดองค์ความรู้และประเมินผลสัมฤทธิ์ของการนำไปใช้ประโยชน์ในชุมชน`
+          ],
+          recommended_tech: 'Progressive Web App (PWA), Cloud Storage, Interactive Multimedia, UX/UI Design System',
+          dataset_plan: `กรณีศึกษาเชิงลึกจากหน่วยงาน ชุมชน หรือกลุ่มผู้มีส่วนได้ส่วนเสียในจังหวัดสุรินทร์ 3-5 กลุ่ม`,
+          suggested_advisor: advisors[2] || advisors[0],
+          originality_score: 90,
           degree_type: isMaster ? 'THESIS (วิทยานิพนธ์)' : 'SENIOR_PROJECT (โปรเจกต์จบ ป.ตรี)'
         }
       ];
