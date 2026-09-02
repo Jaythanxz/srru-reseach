@@ -6,6 +6,7 @@ import SubmitProjectView from '../views/SubmitProjectView.vue';
 import TeacherReviewView from '../views/TeacherReviewView.vue';
 import AdminDashboardView from '../views/AdminDashboardView.vue';
 import BookmarksView from '../views/BookmarksView.vue';
+import MySubmissionsView from '../views/MySubmissionsView.vue';
 import TopicGeneratorView from '../views/TopicGeneratorView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
@@ -52,6 +53,12 @@ const routes = [
     name: 'admin-dashboard',
     component: AdminDashboardView,
     meta: { requiresAuth: true, roles: ['ADMIN', 'TEACHER'], title: 'แดชบอร์ดสถิติและการจัดการ' }
+  },
+  {
+    path: '/my-submissions',
+    name: 'my-submissions',
+    component: MySubmissionsView,
+    meta: { requiresAuth: true, title: 'ผลงานวิจัยของฉัน' }
   },
   {
     path: '/bookmarks',

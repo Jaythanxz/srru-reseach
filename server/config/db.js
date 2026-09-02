@@ -260,14 +260,36 @@ const memoryStore = {
       publish_year: 2024,
       project_type: 'SENIOR_PROJECT',
       pdf_file_path: '/uploads/sample_paper_7.pdf',
-      status: 'PENDING',
+      status: 'REJECTED',
       submitted_by: 4,
-      approved_by: null,
+      approved_by: 2,
       view_count: 45,
       download_count: 0,
-      rejection_reason: null,
+      rejection_reason: 'อาจารย์ได้ตรวจประเมินเล่มแล้ว ขอให้นักศึกษาแก้ไขบทที่ 4 โดยเพิ่มตารางเปรียบเทียบค่าความแม่นยำของเซนเซอร์ IoT และขัดเกลาบทคัดย่อภาษาอังกฤษให้ถูกต้องตามหลักวิชาการก่อนส่งใหม่อีกครั้งครับ',
       created_at: new Date(),
       updated_at: new Date()
+    },
+    {
+      project_id: 8,
+      title_th: 'ระบบพยากรณ์ผลผลิตข้าวหอมมะลิทุ่งกุลาร้องไห้ด้วยการเรียนรู้ของเครื่อง',
+      title_en: 'Jasmine Rice Yield Prediction in Thung Kula Ronghai using Machine Learning',
+      abstract_text: 'งานวิจัยนี้นำเสนอการพยากรณ์ผลผลิตข้าวหอมมะลิสุรินทร์ในพื้นที่ทุ่งกุลาร้องไห้ โดยใช้ข้อมูลสภาพภูมิอากาศ ดัชนีพืชพรรณจากดาวเทียม และแบบจำลองการเรียนรู้ของเครื่อง เพื่อช่วยเกษตรกรวางแผนการผลิตและการจัดการน้ำล่วงหน้า',
+      keywords: 'การพยากรณ์ผลผลิต, ข้าวหอมมะลิ, ทุ่งกุลาร้องไห้, การเรียนรู้ของเครื่อง, ปัญญาประดิษฐ์ทางการเกษตร',
+      authors: 'สมชาย ใจดี',
+      advisor_name: 'ผศ.ดร. ประเสริฐ สกุลดี',
+      faculty_id: 1,
+      department_id: 1,
+      publish_year: 2024,
+      project_type: 'THESIS',
+      pdf_file_path: '/uploads/sample_paper_1.pdf',
+      status: 'REJECTED',
+      submitted_by: 4,
+      approved_by: 2,
+      view_count: 18,
+      download_count: 0,
+      rejection_reason: 'กรุณาปรับปรุงบทคัดย่อภาษาอังกฤษให้ถูกต้องตามหลักไวยากรณ์ และเพิ่มตารางเปรียบเทียบค่าความคลาดเคลื่อน (RMSE และ MAE) ของแบบจำลองในบทที่ 4 ให้ชัดเจนก่อนส่งใหม่อีกครั้งครับ',
+      created_at: new Date(Date.now() - 2 * 86400000),
+      updated_at: new Date(Date.now() - 3600000)
     }
   ],
   user_bookmarks: [
@@ -417,6 +439,10 @@ function executeMemoryQuery(sql, params) {
 
       // Match WHERE clauses against params
       let paramIdx = 0;
+      if (cleanSql.includes('SUBMITTED_BY = ?') || cleanSql.includes('P.SUBMITTED_BY = ?')) {
+        const sId = parseInt(params[0]);
+        results = results.filter(p => p.submitted_by === sId);
+      }
       if (cleanSql.includes('P.STATUS = ?')) {
         const val = params[paramIdx++];
         results = results.filter(p => p.status === val);

@@ -46,6 +46,19 @@
             <span class="px-1.5 py-0.2 text-[9px] bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded font-bold border border-purple-200 dark:border-purple-700">AI PROPOSAL</span>
           </router-link>
 
+          <!-- My Submissions Link for Students -->
+          <router-link
+            to="/my-submissions"
+            v-if="authStore.isAuthenticated && (authStore.userRole === 'STUDENT' || authStore.userRole === 'ADMIN')"
+            class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-purple-700 dark:hover:text-purple-400 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 transition-colors flex items-center gap-1.5"
+            active-class="!text-purple-800 dark:!text-purple-300 !bg-purple-50 dark:!bg-purple-950/60 !font-bold"
+          >
+            <span>📂 ผลงานของฉัน</span>
+            <span v-if="unreadCount > 0" class="px-1.5 py-0.2 text-[9px] bg-rose-500 text-white rounded-full font-bold animate-pulse">
+              {{ unreadCount }}
+            </span>
+          </router-link>
+
           <router-link
             to="/bookmarks"
             v-if="authStore.isAuthenticated"
@@ -72,6 +85,90 @@
               {{ themeStore.isDark ? 'โหมดมืด' : 'โหมดสว่าง' }}
             </span>
           </button>
+
+          <!-- 🔔 Student & Faculty Notification Bell -->
+          <div v-if="authStore.isAuthenticated" class="relative" ref="notifRef">
+            <button
+              type="button"
+              @click="isNotifOpen = !isNotifOpen"
+              class="p-2 sm:px-3 sm:py-1.5 rounded-2xl bg-purple-50 dark:bg-slate-900 hover:bg-purple-100 dark:hover:bg-slate-800 border border-purple-200/80 dark:border-purple-800/80 text-slate-700 dark:text-purple-200 transition-all flex items-center gap-1.5 shadow-2xs relative group"
+              title="การแจ้งเตือนผลการตรวจประเมิน"
+            >
+              <span class="text-sm">🔔</span>
+              <span
+                v-if="unreadCount > 0"
+                class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white rounded-full text-[10px] font-black flex items-center justify-center border-2 border-white dark:border-slate-950 animate-bounce"
+              >
+                {{ unreadCount }}
+              </span>
+              <span class="text-[11px] font-bold hidden md:inline-block">แจ้งเตือน</span>
+            </button>
+
+            <!-- Notification Dropdown Panel -->
+            <div
+              v-if="isNotifOpen"
+              class="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-800 shadow-2xl z-50 overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150"
+            >
+              <div class="p-3.5 bg-gradient-to-r from-purple-50 to-emerald-50 dark:from-purple-950/60 dark:to-emerald-950/40 border-b border-purple-100 dark:border-purple-900/50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">🔔</span>
+                  <span class="font-bold text-xs text-slate-800 dark:text-slate-200">การแจ้งเตือนผลการตรวจ</span>
+                </div>
+                <span v-if="unreadCount > 0" class="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">
+                  {{ unreadCount }} งานต้องแก้ไข
+                </span>
+              </div>
+
+              <div class="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+                <div v-if="notifications.length === 0" class="p-6 text-center text-xs text-slate-400">
+                  ไม่มีการแจ้งเตือนใหม่ในขณะนี้
+                </div>
+                <div
+                  v-for="notif in notifications"
+                  :key="notif.id"
+                  @click="handleNotificationClick(notif)"
+                  :class="[
+                    'p-3.5 hover:bg-purple-50/60 dark:hover:bg-purple-950/30 transition-colors cursor-pointer space-y-1.5',
+                    notif.type === 'REJECTED' ? 'bg-rose-50/40 dark:bg-rose-950/30' : ''
+                  ]"
+                >
+                  <div class="flex items-center justify-between gap-2">
+                    <span
+                      :class="[
+                        'text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1',
+                        notif.type === 'REJECTED' ? 'bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-200' : 'bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-200'
+                      ]"
+                    >
+                      <span>{{ notif.type === 'REJECTED' ? '⚠️ ส่งกลับแก้ไข' : '✅ อนุมัติแล้ว' }}</span>
+                    </span>
+                    <span class="text-[10px] text-slate-400">
+                      {{ formatRelativeTime(notif.time) }}
+                    </span>
+                  </div>
+                  <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1">
+                    {{ notif.title }}
+                  </h4>
+                  <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed bg-white/80 dark:bg-slate-800/80 p-2 rounded-lg border border-slate-200/60 dark:border-slate-700/60">
+                    {{ notif.message }}
+                  </p>
+                  <div class="text-[10px] text-purple-600 dark:text-purple-400 font-medium flex items-center justify-between pt-0.5">
+                    <span>โดย: {{ notif.sender }}</span>
+                    <span class="font-bold underline text-rose-600 dark:text-rose-400">คลิกดูและแก้ไข →</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-2 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-100 dark:border-slate-800 text-center">
+                <router-link
+                  to="/my-submissions"
+                  @click="isNotifOpen = false"
+                  class="text-[11px] font-bold text-purple-700 dark:text-purple-300 hover:underline block py-1"
+                >
+                  ดูผลงานทั้งหมดของฉัน (My Submissions) →
+                </router-link>
+              </div>
+            </div>
+          </div>
 
           <!-- User Profile Dropdown Button -->
           <div v-if="authStore.isAuthenticated" class="relative" ref="dropdownRef">
@@ -264,17 +361,55 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useThemeStore } from '../stores/theme';
 import { useRouter } from 'vue-router';
+import api from '../services/api';
 
 const authStore = useAuthStore();
 const themeStore = useThemeStore();
 const router = useRouter();
 const isMenuOpen = ref(false);
 const isMobileDrawerOpen = ref(false);
+const isNotifOpen = ref(false);
+const notifications = ref([]);
+const unreadCount = ref(0);
 const dropdownRef = ref(null);
+const notifRef = ref(null);
+
+const fetchNotifications = async () => {
+  if (!authStore.isAuthenticated) {
+    notifications.value = [];
+    unreadCount.value = 0;
+    return;
+  }
+  try {
+    const res = await api.get('/user/notifications');
+    notifications.value = res.data || [];
+    unreadCount.value = res.unreadCount || 0;
+  } catch (err) {
+    // Non-fatal
+  }
+};
+
+const formatRelativeTime = (time) => {
+  if (!time) return '';
+  const diff = Date.now() - new Date(time).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'เมื่อสักครู่';
+  if (mins < 60) return `${mins} นาทีที่แล้ว`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours} ชั่วโมงที่แล้ว`;
+  const days = Math.floor(hours / 24);
+  return `${days} วันที่แล้ว`;
+};
+
+const handleNotificationClick = (notif) => {
+  isNotifOpen.value = false;
+  router.push('/my-submissions');
+};
 
 const switchRole = async (role) => {
   try {
     await authStore.quickSwitchRole(role);
+  await fetchNotifications();
     isMenuOpen.value = false;
     isMobileDrawerOpen.value = false;
     if (role === 'TEACHER') router.push('/teacher/review');
@@ -300,6 +435,10 @@ const handleClickOutside = (e) => {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
+  fetchNotifications();
+  // Poll notifications periodically
+  const notifInterval = setInterval(fetchNotifications, 30000);
+  onUnmounted(() => clearInterval(notifInterval));
 });
 
 onUnmounted(() => {
