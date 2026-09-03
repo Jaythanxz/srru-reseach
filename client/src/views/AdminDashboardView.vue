@@ -190,6 +190,100 @@
       </div>
     </div>
 
+    <!-- 2.5 Research Projects Repository Management & Deletion (Admin Only) -->
+    <div v-if="authStore.isAdmin" class="bg-white dark:bg-slate-900/90 rounded-3xl border border-purple-100 dark:border-purple-900/50 shadow-xs overflow-hidden space-y-4">
+      <div class="p-6 border-b border-slate-100 dark:border-purple-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">คลังจัดการและลบผลงานวิจัย (Research Repository Management)</h3>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">สามารถค้นหา ตรวจสอบสถานะ และลบผลงานวิจัยที่อนุมัติแล้วออกจากระบบได้ถาวร</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <input
+              v-model="projectSearch"
+              type="text"
+              placeholder="ค้นหาชื่อเรื่อง, ผู้แต่ง, คณะ..."
+              class="w-64 pl-9 pr-3 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
+            />
+            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <span class="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-bold text-xs border border-purple-200 dark:border-purple-800 whitespace-nowrap">
+            {{ filteredProjects.length }} / {{ allProjects.length }} เรื่อง
+          </span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+          <thead class="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider text-[11px] border-b border-slate-100 dark:border-slate-700">
+            <tr>
+              <th class="px-6 py-4">ID</th>
+              <th class="px-6 py-4">ชื่อผลงานวิจัย (Title)</th>
+              <th class="px-6 py-4">ผู้จัดทำ / คณะ</th>
+              <th class="px-6 py-4">ประเภท / ปี</th>
+              <th class="px-6 py-4 text-center">สถานะ</th>
+              <th class="px-6 py-4 text-right">การจัดการ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+            <tr v-if="filteredProjects.length === 0">
+              <td colspan="6" class="px-6 py-8 text-center text-slate-400">ไม่พบข้อมูลผลงานวิจัยที่ค้นหา</td>
+            </tr>
+            <tr v-for="p in filteredProjects" :key="p.project_id" class="hover:bg-purple-50/20 dark:hover:bg-purple-950/40 transition-colors">
+              <td class="px-6 py-4 font-bold text-purple-900 dark:text-purple-300">#{{ p.project_id }}</td>
+              <td class="px-6 py-4 max-w-sm">
+                <router-link :to="'/projects/' + p.project_id" class="font-bold text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 line-clamp-2 transition-colors">
+                  {{ p.title_th }}
+                </router-link>
+                <div class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">{{ p.title_en || '-' }}</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="font-medium text-slate-800 dark:text-slate-200">{{ p.authors || '-' }}</div>
+                <div class="text-[11px] text-slate-400">{{ p.faculty_name || '-' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="font-semibold">{{ p.project_type === 'THESIS' ? 'วิทยานิพนธ์' : 'โปรเจกต์จบ' }}</span>
+                <span class="text-slate-400 ml-1">({{ (parseInt(p.publish_year) || 2024) + 543 }})</span>
+              </td>
+              <td class="px-6 py-4 text-center whitespace-nowrap">
+                <span
+                  :class="[
+                    'px-2.5 py-1 rounded-full font-bold text-[11px]',
+                    p.status === 'APPROVED' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' :
+                    p.status === 'PENDING' ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800' :
+                    'bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+                  ]"
+                >
+                  {{ p.status === 'APPROVED' ? 'อนุมัติแล้ว' : p.status === 'PENDING' ? 'รออนุมัติ' : 'ส่งกลับแก้ไข' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right whitespace-nowrap space-x-2">
+                <router-link
+                  :to="'/projects/' + p.project_id"
+                  class="px-2.5 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 hover:bg-purple-100 font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                >
+                  👁️ ดู
+                </router-link>
+                <button
+                  @click="handleDeleteProject(p.project_id, p.title_th)"
+                  :disabled="isDeletingProject === p.project_id"
+                  class="px-2.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900 border border-rose-200 dark:border-rose-800 font-bold text-xs inline-flex items-center gap-1 transition-colors disabled:opacity-50"
+                  title="ลบผลงานวิจัยนี้ออกจากระบบ"
+                >
+                  <span v-if="isDeletingProject === p.project_id">กำลังลบ...</span>
+                  <span v-else>🗑️ ลบ</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- 3. User Management Table (Admin Only) -->
     <div v-if="authStore.isAdmin" class="bg-white dark:bg-slate-900/90 rounded-3xl border border-purple-100 dark:border-purple-900/50 shadow-xs overflow-hidden space-y-4">
       <div class="p-6 border-b border-slate-100 dark:border-purple-900/40 flex items-center justify-between">
@@ -338,7 +432,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import api from '../services/api';
 import { useAuthStore } from '../stores/auth';
 
@@ -349,6 +443,51 @@ const facultyStats = ref([]);
 const trendingKeywords = ref([]);
 const users = ref([]);
 const showExportModal = ref(false);
+
+const allProjects = ref([]);
+const projectSearch = ref('');
+const isDeletingProject = ref(null);
+
+const loadProjects = async () => {
+  try {
+    const res = await api.get('/projects?limit=100&status=');
+    if (res.success) {
+      allProjects.value = res.data || [];
+    }
+  } catch (e) {
+    console.error('Failed to load projects for admin', e);
+  }
+};
+
+const filteredProjects = computed(() => {
+  if (!projectSearch.value.trim()) return allProjects.value;
+  const q = projectSearch.value.toLowerCase().trim();
+  return allProjects.value.filter(p =>
+    (p.title_th && p.title_th.toLowerCase().includes(q)) ||
+    (p.title_en && p.title_en.toLowerCase().includes(q)) ||
+    (p.authors && p.authors.toLowerCase().includes(q)) ||
+    (p.faculty_name && p.faculty_name.toLowerCase().includes(q))
+  );
+});
+
+const handleDeleteProject = async (projectId, title) => {
+  if (!confirm(`⚠️ ยืนยันการลบผลงานวิจัย:\n"${title}"\n\nคำเตือน: เมื่อลบแล้ว ข้อมูลผลงานและไฟล์ PDF จะถูกลบออกจากคลังวิจัยอย่างถาวร ยืนยันที่จะลบหรือไม่?`)) {
+    return;
+  }
+  try {
+    isDeletingProject.value = projectId;
+    const res = await api.delete(`/projects/${projectId}`);
+    if (res.success) {
+      alert('✅ ลบผลงานวิจัยออกจากระบบเรียบร้อยแล้ว');
+      await loadProjects();
+      await loadAllDashboardData();
+    }
+  } catch (err) {
+    alert(`❌ เกิดข้อผิดพลาด: ${err?.message || 'ไม่สามารถลบผลงานได้'}`);
+  } finally {
+    isDeletingProject.value = null;
+  }
+};
 
 const researchClusters = ref([
   {
