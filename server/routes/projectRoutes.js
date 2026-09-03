@@ -39,6 +39,6 @@ const uploadFields = upload.fields([
 // Student / Author submission (PDF + Cover / Author Image)
 router.post('/', authenticateToken, uploadFields, createProject);
 router.put('/:id', authenticateToken, uploadFields, updateProject);
-router.delete('/:id', authenticateToken, authorizeRoles('ADMIN'), deleteProject);
+router.delete('/:id', authenticateToken, authorizeRoles('ADMIN', 'TEACHER'), deleteProject);
 
 module.exports = router;

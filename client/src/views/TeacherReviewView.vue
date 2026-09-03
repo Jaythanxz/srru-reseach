@@ -99,6 +99,17 @@
                 >
                   ส่งกลับแก้ไข
                 </button>
+
+                <!-- Delete Project -->
+                <button
+                  @click="handleDeleteTeacher(item.project_id, item.title_th)"
+                  :disabled="isDeletingId === item.project_id"
+                  class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-600 hover:text-white dark:hover:bg-rose-600 text-slate-600 dark:text-slate-300 font-bold border border-slate-200 dark:border-slate-700 transition-colors inline-flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                  title="ลบผลงานวิจัยนี้ออกจากระบบ"
+                >
+                  <span>🗑️</span>
+                  <span>{{ isDeletingId === item.project_id ? 'กำลังลบ...' : 'ลบ' }}</span>
+                </button>
               </td>
             </tr>
           </tbody>

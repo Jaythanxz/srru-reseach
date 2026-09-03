@@ -624,6 +624,19 @@ function executeMemoryQuery(sql, params) {
   }
 
   // DELETE queries
+  if (cleanSql.startsWith('DELETE FROM RESEARCH_PROJECTS')) {
+    const pId = parseInt(params[0]);
+    const initialLen = memoryStore.research_projects.length;
+    memoryStore.research_projects = memoryStore.research_projects.filter(p => p.project_id !== pId);
+    memoryStore.user_bookmarks = memoryStore.user_bookmarks.filter(b => b.project_id !== pId);
+    if (memoryStore.user_notifications) {
+      memoryStore.user_notifications = memoryStore.user_notifications.filter(n => n.project_id !== pId);
+    }
+    saveStoreToDisk();
+    console.log(`[In-Memory DB] Deleted project #${pId} from memoryStore. Remaining: ${memoryStore.research_projects.length}`);
+    return { affectedRows: initialLen - memoryStore.research_projects.length };
+  }
+
   if (cleanSql.startsWith('DELETE FROM USER_BOOKMARKS')) {
     const uId = parseInt(params[0]);
     const pId = parseInt(params[1]);
