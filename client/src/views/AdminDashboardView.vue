@@ -668,7 +668,8 @@ const exportTrendingKeywordsCSV = () => {
   triggerCSVDownload(csv, `SRRU_Trending_Keywords_${new Date().toISOString().slice(0, 10)}.csv`);
 };
 
-onMounted(() => {
-  loadAllDashboardData();
+onMounted(async () => {
+  await loadAllDashboardData();
+  await loadProjects();
 });
 </script>
