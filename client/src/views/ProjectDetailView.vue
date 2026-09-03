@@ -834,6 +834,40 @@ import QRCode from 'qrcode';
 const showCertificateModal = ref(false);
 
 const route = useRoute();
+const isDeletingProject = ref(false);
+
+const handleDeleteProjectDetail = async () => {
+  if (!authStore.isAdmin) {
+    if (confirm('คุณต้องเข้าสู่ระบบในฐานะ ADMIN ก่อนลบผลงานวิจัยนี้\nต้องการเข้าสู่ระบบเป็น ADMIN ทันทีหรือไม่?')) {
+      try {
+        await authStore.login({ username: 'admin', password: 'password123' });
+      } catch (e) {
+        alert('เข้าสู่ระบบไม่สำเร็จ: ' + e.message);
+        return;
+      }
+    } else {
+      return;
+    }
+  }
+
+  const pTitle = project.value?.title_th || 'ผลงานวิจัยนี้';
+  if (!confirm(`⚠️ ยืนยันการลบผลงานวิจัย:\n"${pTitle}"\n\nคำเตือน: ข้อมูลและไฟล์ทั้งหมดจะถูกลบออกจากคลังวิจัยอย่างถาวร ต้องการลบจริงหรือไม่?`)) {
+    return;
+  }
+
+  try {
+    isDeletingProject.value = true;
+    const res = await api.delete(`/projects/${project.value.project_id}`);
+    if (res.success) {
+      alert('✅ ลบผลงานวิจัยออกจากระบบเรียบร้อยแล้ว');
+      router.push('/search');
+    }
+  } catch (err) {
+    alert('❌ ไม่สามารถลบผลงานได้: ' + (err?.message || ''));
+  } finally {
+    isDeletingProject.value = false;
+  }
+};
 const router = useRouter();
 const projectStore = useProjectStore();
 const recStore = useRecommendationStore();

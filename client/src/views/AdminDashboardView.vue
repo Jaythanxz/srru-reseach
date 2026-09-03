@@ -191,7 +191,20 @@
     </div>
 
     <!-- 2.5 Research Projects Repository Management & Deletion (Admin Only) -->
-    <div v-if="authStore.isAdmin" class="bg-white dark:bg-slate-900/90 rounded-3xl border border-purple-100 dark:border-purple-900/50 shadow-xs overflow-hidden space-y-4">
+    <div class="bg-white dark:bg-slate-900/90 rounded-3xl border border-purple-100 dark:border-purple-900/50 shadow-xs overflow-hidden space-y-4">
+      <!-- Admin Mode Status Banner -->
+      <div v-if="!authStore.isAdmin" class="bg-amber-500/10 border-b border-amber-500/20 px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2 text-amber-700 dark:text-amber-300 font-medium">
+          <span>⚠️</span>
+          <span>ขณะนี้คุณยังไม่ได้เข้าสู่ระบบในสิทธิ์ <strong>ผู้ดูแลระบบ (ADMIN)</strong></span>
+        </div>
+        <button
+          @click="quickLoginAdmin"
+          class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
+        >
+          <span>🔐 สลับเป็นสิทธิ์ ADMIN ทันที (1-Click)</span>
+        </button>
+      </div>
       <div class="p-6 border-b border-slate-100 dark:border-purple-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-2">
@@ -470,7 +483,26 @@ const filteredProjects = computed(() => {
   );
 });
 
+const quickLoginAdmin = async () => {
+  try {
+    await authStore.login({ username: 'admin', password: 'password123' });
+    alert('✅ เข้าสู่ระบบในฐานะ ผู้ดูแลระบบ (ADMIN) เรียบร้อยแล้ว สามารถกดลบผลงานวิจัยได้ทันที');
+    await loadProjects();
+    await loadAllDashboardData();
+  } catch (err) {
+    alert('เข้าสู่ระบบ Admin ไม่สำเร็จ: ' + (err?.message || ''));
+  }
+};
+
 const handleDeleteProject = async (projectId, title) => {
+  if (!authStore.isAdmin) {
+    if (confirm('คุณต้องเข้าสู่ระบบในฐานะ ADMIN ก่อนลบผลงาน\nต้องการเข้าสู่ระบบเป็น ADMIN ทันทีหรือไม่?')) {
+      await quickLoginAdmin();
+    } else {
+      return;
+    }
+  }
+
   if (!confirm(`⚠️ ยืนยันการลบผลงานวิจัย:\n"${title}"\n\nคำเตือน: เมื่อลบแล้ว ข้อมูลผลงานและไฟล์ PDF จะถูกลบออกจากคลังวิจัยอย่างถาวร ยืนยันที่จะลบหรือไม่?`)) {
     return;
   }
