@@ -65,6 +65,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Serve Frontend Static Files (Single-deployment support for Render / Railway / Cloud)
+const clientDistPath = path.join(__dirname, '../client/dist');
+if (fs.existsSync(clientDistPath)) {
+  app.use(express.static(clientDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
+
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error('[Unhandled Server Error]', err);
