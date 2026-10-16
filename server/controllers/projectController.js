@@ -9,6 +9,7 @@ const {
   chatDocumentRAG,
   generateResearchKnowledgeGraph
 } = require('../services/aiService');
+const { handleDocumentRAGChat } = require('../services/geminiService');
 const { uploadFileToStorage, isCloudUrl } = require('../services/storageService');
 
 // POST /api/projects/generate-topics
@@ -452,13 +453,13 @@ async function downloadProject(req, res) {
 async function chatWithDocument(req, res) {
   try {
     const projectId = parseInt(req.params.id);
-    const { question } = req.body;
+    const { question, history } = req.body;
 
     if (!question || !question.trim()) {
       return res.status(400).json({ success: false, message: 'กรุณาระบุคำถามที่ต้องการสนทนากับเอกสาร' });
     }
 
-    const result = await chatDocumentRAG(projectId, question.trim());
+    const result = await handleDocumentRAGChat({ projectId, question: question.trim(), history });
     return res.json({
       success: true,
       projectId,

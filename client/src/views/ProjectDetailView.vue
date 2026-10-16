@@ -1173,7 +1173,7 @@ const removeSelectedImage = () => {
   }
 };
 
-const sendRagQuestion = (text, attachedImg = null, imgName = null) => {
+const sendRagQuestion = async (text, attachedImg = null, imgName = null) => {
   const pId = project.value?.project_id || route.params.id;
   if (!text && !attachedImg) return;
 
@@ -1192,43 +1192,65 @@ const sendRagQuestion = (text, attachedImg = null, imgName = null) => {
     }
   });
 
-  setTimeout(() => {
-    try {
-      const pData = project.value || {
-        title_th: 'ระบบคลังงานวิจัยและวิทยานิพนธ์ มหาวิทยาลัยราชภัฏสุรินทร์',
-        abstract_text: 'งานวิจัยนี้พัฒนาระบบปัญญาประดิษฐ์เพื่อการจัดเก็บและแนะนำงานวิจัยอัจฉริยะ',
-        publish_year: 2024,
-        keywords: 'AI, RAG, Machine Learning, Surin',
-        technology_stack: 'Vue.js, Node.js, Express, PyThaiNLP, Scikit-Learn',
-        authors: 'คณะผู้วิจัย มรภ.สุรินทร์',
-        advisor_name: 'ผศ.ดร. ประเสริฐ สกุลดี'
-      };
+  try {
+    const pData = project.value || {
+      title_th: 'ระบบคลังงานวิจัยและวิทยานิพนธ์ มหาวิทยาลัยราชภัฏสุรินทร์',
+      abstract_text: 'งานวิจัยนี้พัฒนาระบบปัญญาประดิษฐ์เพื่อการจัดเก็บและแนะนำงานวิจัยอัจฉริยะ',
+      publish_year: 2024,
+      keywords: 'AI, RAG, Machine Learning, Surin',
+      technology_stack: 'Vue.js, Node.js, Express, PyThaiNLP, Scikit-Learn',
+      authors: 'คณะผู้วิจัย มรภ.สุรินทร์',
+      advisor_name: 'ผศ.ดร. ประเสริฐ สกุลดี'
+    };
 
-      const res = getLocalRagAnswer(pData, text, attachedImg, imgName);
-
-      ragMessages.value.push({
-        sender: 'ai',
-        text: formatMarkdown(res.answer),
-        confidence: res.confidence || 0.95,
-        citations: res.citations || [],
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
-
-      // Background telemetry logging (non-blocking)
-      if (pId) {
-        api.post(`/projects/${pId}/chat-document`, { question: text, has_image: !!attachedImg }).catch(() => {});
-      }
-    } catch (err) {
-      console.error('RAG Error:', err);
-    } finally {
-      ragLoading.value = false;
-      nextTick(() => {
-        if (ragMessageContainer.value) {
-          ragMessageContainer.value.scrollTop = ragMessageContainer.value.scrollHeight;
+    let res = null;
+    if (pId && !attachedImg) {
+      try {
+        const historyPayload = ragMessages.value.slice(-6).map(m => ({
+          role: m.sender === 'user' ? 'user' : 'model',
+          content: m.text
+        }));
+        const response = await api.post(`/projects/${pId}/chat-document`, {
+          question: text,
+          history: historyPayload
+        });
+        if (response.data && response.data.answer) {
+          res = response.data;
         }
-      });
+      } catch (apiErr) {
+        console.warn('API chat-document error, using local RAG fallback:', apiErr.message);
+      }
     }
-  }, 120);
+
+    if (!res) {
+      res = getLocalRagAnswer(pData, text, attachedImg, imgName);
+    }
+
+    ragMessages.value.push({
+      sender: 'ai',
+      text: formatMarkdown(res.answer),
+      confidence: res.confidence || 0.95,
+      citations: res.citations || [],
+      source: res.source || 'gemini',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+  } catch (err) {
+    console.error('RAG Error:', err);
+    ragMessages.value.push({
+      sender: 'ai',
+      text: 'ขออภัยครับ เกิดข้อผิดพลาดในการประมวลผลคำตอบ กรุณาลองส่งใหม่อีกครั้ง',
+      confidence: 0,
+      citations: [],
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+  } finally {
+    ragLoading.value = false;
+    nextTick(() => {
+      if (ragMessageContainer.value) {
+        ragMessageContainer.value.scrollTop = ragMessageContainer.value.scrollHeight;
+      }
+    });
+  }
 };
 
 const handleSendRag = () => {
