@@ -8,12 +8,12 @@ const { query } = require('../config/db');
 
 // Model list in order of preference
 const GEMINI_MODELS = [
+  'gemini-3.1-flash-lite-preview',
+  'gemini-3.5-flash-lite',
   'gemini-3.6-flash',
-  'gemini-3.7-flash',
   'gemini-3.8-flash',
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
-  'gemini-1.5-flash'
+  'gemini-3.7-flash',
+  'gemini-2.5-flash'
 ];
 
 /**
@@ -71,12 +71,17 @@ async function callGeminiApi(systemPrompt, userPrompt, history = []) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(8000)
+        signal: AbortSignal.timeout(6000)
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.warn(`Gemini API (${model}) failed with status ${response.status}:`, errorData.error?.message || response.statusText);
+        console.warn(`Gemini API (${model}) status ${response.status}:`, errorData.error?.message || response.statusText);
+        if (response.status === 429) {
+          // Rate limit reached for this tier, break loop quickly to use comprehensive fallback
+          console.warn('Gemini API rate limit reached, falling back to SRRU Academic Knowledge Engine.');
+          break;
+        }
         continue;
       }
 

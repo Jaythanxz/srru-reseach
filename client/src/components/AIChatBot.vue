@@ -277,12 +277,12 @@ const sendMessage = async (text) => {
       history: historyPayload
     });
 
-    const data = res.data || {};
+    const data = (res && (res.text || res.recommendedProjects)) ? res : (res?.data || {});
     activeSource.value = data.source || 'gemini';
 
     messages.value.push({
       sender: 'ai',
-      text: data.text || 'ผมได้รับคำถามแล้วครับ แต่ไม่สามารถประมวลผลคำตอบได้ชั่วคราว กรุณาลองใหม่อีกครั้งครับ',
+      text: data.text || 'ขออภัยครับ ไม่สามารถประมวลผลคำตอบได้ในขณะนี้ กรุณาลองใหม่อีกครั้งครับ',
       recommendedProjects: data.recommendedProjects || [],
       source: data.source,
       model: data.model,

@@ -1214,8 +1214,9 @@ const sendRagQuestion = async (text, attachedImg = null, imgName = null) => {
           question: text,
           history: historyPayload
         });
-        if (response.data && response.data.answer) {
-          res = response.data;
+        const respData = (response && response.answer) ? response : (response?.data || {});
+        if (respData && respData.answer) {
+          res = respData;
         }
       } catch (apiErr) {
         console.warn('API chat-document error, using local RAG fallback:', apiErr.message);
