@@ -1457,7 +1457,7 @@ const fetchAISummary = async () => {
   loadingSummary.value = true;
   try {
     const res = await api.get(`/projects/${project.value.project_id}/ai-summary`);
-    aiSummary.value = res;
+    aiSummary.value = (res && res.summary_bullets) ? res : (res?.data || null);
   } catch (err) {
     console.error('Fetch AI summary error:', err);
   } finally {

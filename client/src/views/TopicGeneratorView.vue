@@ -18,7 +18,10 @@
       <div class="flex items-center gap-3">
         <div class="px-4 py-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-100 dark:border-purple-800/60 shadow-2xs text-center">
           <div class="text-xs font-bold text-slate-400 dark:text-slate-500">สถานะ AI Engine</div>
-          <div class="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5">READY • Thai NLP</div>
+          <div class="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5 flex items-center gap-1 justify-center">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>⚡ GEMINI LLM • Thai NLP</span>
+          </div>
         </div>
       </div>
     </div>
@@ -125,6 +128,9 @@
               </span>
               <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-[11px] border border-transparent dark:border-slate-700">
                 {{ p.degree_type }}
+              </span>
+              <span v-if="p.source === 'gemini'" class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-bold text-[10px] border border-emerald-300 dark:border-emerald-700">
+                ⚡ Gemini LLM
               </span>
             </div>
 
@@ -238,11 +244,12 @@ const generateTopics = async () => {
       degree_level: form.degree_level,
       keywords: form.keywords
     });
-    if (res.success) {
-      proposals.value = res.proposals || [];
+    const respData = (res && res.success !== undefined) ? res : (res?.data || {});
+    if (respData.success) {
+      proposals.value = respData.proposals || [];
     }
   } catch (err) {
-    alert('เกิดข้อผิดพลาดในการสร้างหัวข้อ: ' + err.message);
+    alert('เกิดข้อผิดพลาดในการสร้างหัวข้อ: ' + (err.message || 'กรุณาลองใหม่อีกครั้ง'));
   } finally {
     loading.value = false;
   }

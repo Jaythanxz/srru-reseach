@@ -9,14 +9,19 @@ const {
   chatDocumentRAG,
   generateResearchKnowledgeGraph
 } = require('../services/aiService');
-const { handleDocumentRAGChat } = require('../services/geminiService');
+const {
+  handleDocumentRAGChat,
+  generateThesisTopicProposalsWithGemini,
+  generateExecutiveSummaryWithGemini,
+  getGeminiTopicRedundancyAdvice
+} = require('../services/geminiService');
 const { uploadFileToStorage, isCloudUrl } = require('../services/storageService');
 
 // POST /api/projects/generate-topics
 async function generateTopics(req, res) {
   try {
     const { faculty_id, department_id, keywords, degree_level } = req.body;
-    const proposals = await generateThesisTopicProposals({ faculty_id, department_id, keywords, degree_level });
+    const proposals = await generateThesisTopicProposalsWithGemini({ faculty_id, department_id, keywords, degree_level });
     return res.json({ success: true, count: proposals.length, proposals });
   } catch (error) {
     console.error('Generate topics controller error:', error);
@@ -29,7 +34,8 @@ async function checkRedundancy(req, res) {
   try {
     const { title_th, title_en, abstract_text, keywords } = req.body;
     const result = await checkTopicRedundancy(title_th, title_en, abstract_text, keywords);
-    return res.json({ success: true, ...result });
+    const aiAdvice = await getGeminiTopicRedundancyAdvice(title_th, abstract_text, result.top_matches);
+    return res.json({ success: true, ...result, ai_advice: aiAdvice });
   } catch (error) {
     console.error('Check redundancy controller error:', error);
     return res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดในการตรวจสอบความซ้ำซ้อน', error: error.message });
@@ -212,7 +218,7 @@ async function getAISummary(req, res) {
       return res.status(404).json({ success: false, message: 'ไม่พบข้อมูลงานวิจัย' });
     }
 
-    const summary = await generateAIExecutiveSummary(projects[0]);
+    const summary = await generateExecutiveSummaryWithGemini(projects[0]);
     return res.json(summary);
   } catch (error) {
     console.error('Get AI summary error:', error);

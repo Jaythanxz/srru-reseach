@@ -62,6 +62,14 @@
           {{ redundancyResult.risk_message }}
         </p>
 
+        <!-- Gemini AI Differentiation Advice -->
+        <div v-if="redundancyResult.ai_advice" class="mt-2 p-3 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/80 text-xs text-purple-900 dark:text-purple-200 space-y-1">
+          <div class="font-bold flex items-center gap-1.5 text-purple-800 dark:text-purple-300">
+            <span>⚡ คำแนะนำสร้างความแปลกใหม่จาก Gemini AI:</span>
+          </div>
+          <div class="leading-relaxed opacity-95 whitespace-pre-line">{{ redundancyResult.ai_advice }}</div>
+        </div>
+
         <!-- Matched Existing Papers -->
         <div v-if="redundancyResult.top_matches && redundancyResult.top_matches.length > 0" class="pt-2 border-t border-black/5 dark:border-white/10 space-y-1.5">
           <div class="text-[11px] font-bold opacity-80">ผลงานเดิมในคลังที่ตรวจพบความคล้ายคลึง:</div>

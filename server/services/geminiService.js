@@ -323,8 +323,157 @@ ${docContext}`;
   };
 }
 
+/**
+ * Generate Thesis & Capstone Topic Proposals with Gemini AI
+ */
+async function generateThesisTopicProposalsWithGemini({ faculty_id, department_id, keywords, degree_level }) {
+  let faculty_name = 'มหาวิทยาลัยราชภัฏสุรินทร์';
+  let department_name = '';
+
+  if (faculty_id) {
+    const facs = await query('SELECT faculty_name FROM faculties WHERE faculty_id = ?', [faculty_id]);
+    if (facs && facs[0]) faculty_name = facs[0].faculty_name;
+  }
+  if (department_id) {
+    const depts = await query('SELECT department_name FROM departments WHERE department_id = ?', [department_id]);
+    if (depts && depts[0]) department_name = depts[0].department_name;
+  }
+
+  const isMaster = degree_level === 'MASTER' || degree_level === 'DOCTORAL';
+  const degreeText = isMaster ? 'THESIS (วิทยานิพนธ์บัณฑิตศึกษา)' : 'SENIOR_PROJECT (โปรเจกต์จบปริญญาตรี)';
+
+  const prompt = `คุณคือ "คณบดีและอาจารย์ผู้เชี่ยวชาญการตั้งหัวข้อวิจัย" ประจำมหาวิทยาลัยราชภัฏสุรินทร์ (SRRU)
+กรุณาสร้างข้อเสนอหัวข้อโครงงานวิจัยที่สดใหม่ โดดเด่น มีคุณค่าทางวิชาการ และไม่ซ้ำซ้อน 3 หัวข้อ สำหรับนักศึกษา:
+- คณะ: ${faculty_name}
+- ภาควิชา/สาขาวิชา: ${department_name || 'ทั่วไป'}
+- คำสำคัญหรือหัวข้อที่สนใจ: ${keywords || 'ปัญญาประดิษฐ์ เกษตรอัจฉริยะ ภูมิปัญญาท้องถิ่นสุรินทร์'}
+- ระดับการศึกษา: ${degreeText}
+
+ข้อกำหนด:
+1. แต่ละหัวข้อต้องมีชื่อเรื่องภาษาไทยที่กระชับ ตรงหลักวิชาการ และชื่อเรื่องภาษาอังกฤษที่ถูกต้อง
+2. กำหนดวัตถุประสงค์ 3 ข้อที่วัดผลได้จริง
+3. แนะนำเทคโนโลยี/เครื่องมือที่ทันสมัย (เช่น Machine Learning, IoT, Computer Vision, RAG, Web Cloud)
+4. กำหนดแผนการเก็บข้อมูลและกลุ่มตัวอย่างที่มีความเชื่อมโยงกับจังหวัดสุรินทร์ หรือบริบทที่สอดคล้อง
+
+ตอบกลับเฉพาะ JSON Array เท่านั้น ห้ามใส่ markdown codeblock หรือข้อความอื่น:
+[
+  {
+    "id": 1,
+    "title_th": "ชื่อเรื่องภาษาไทย",
+    "title_en": "Professional English Title",
+    "objectives": [
+      "วัตถุประสงค์ข้อที่ 1",
+      "วัตถุประสงค์ข้อที่ 2",
+      "วัตถุประสงค์ข้อที่ 3"
+    ],
+    "recommended_tech": "เทคโนโลยีและภาษาโปรแกรมที่ใช้",
+    "dataset_plan": "แผนการเก็บข้อมูลและกลุ่มตัวอย่างเชิงพื้นที่",
+    "suggested_advisor": "ผศ.ดร. ประเสริฐ สกุลดี",
+    "originality_score": 95,
+    "degree_type": "${degreeText}"
+  }
+]`;
+
+  try {
+    const geminiRes = await callGeminiApi('คุณเป็นผู้เชี่ยวชาญด้านการวิจัยระดับมหาวิทยาลัย ให้คำแนะนำวิชาการเป็นภาษาไทยและส่งออกเป็น JSON Array ตามโครงสร้างที่กำหนดเท่านั้น', prompt);
+    if (geminiRes && geminiRes.text) {
+      const cleanJson = geminiRes.text.replace(/```json/gi, '').replace(/```/g, '').trim();
+      const proposals = JSON.parse(cleanJson);
+      if (Array.isArray(proposals) && proposals.length > 0) {
+        return proposals.map((p, idx) => ({
+          ...p,
+          id: idx + 1,
+          originality_score: p.originality_score || (90 + idx * 2),
+          degree_type: p.degree_type || degreeText,
+          source: 'gemini',
+          model: geminiRes.model
+        }));
+      }
+    }
+  } catch (err) {
+    console.warn('Gemini topic generation failed or parsed error, using rule-based fallback:', err.message);
+  }
+
+  // Fallback to local rule engine
+  const { generateThesisTopicProposals } = require('./aiService');
+  return generateThesisTopicProposals({ faculty_id, department_id, keywords, degree_level });
+}
+
+/**
+ * Generate AI Executive Summary with Gemini
+ */
+async function generateExecutiveSummaryWithGemini(project) {
+  const { title_th, abstract_text } = project;
+  const prompt = `จากบทคัดย่องานวิจัยต่อไปนี้:
+ชื่อเรื่อง: ${title_th}
+บทคัดย่อ: ${abstract_text}
+
+จงสังเคราะห์สาระสำคัญออกเป็น 3 หัวข้อย่อย สรุปประเด็นอย่างกระชับ สละสลวย ชัดเจน:
+ตอบกลับเป็น JSON Array เท่านั้น ห้ามใส่ markdown codeblock:
+[
+  { "tag": "🎯 วัตถุประสงค์หลัก", "title": "เป้าหมายและโจทย์การวิจัย", "description": "สรุปวัตถุประสงค์ 1-2 ประโยค" },
+  { "tag": "⚙️ ระเบียบวิธี & เทคโนโลยี", "title": "เครื่องมือและขั้นตอนการดำเนินงาน", "description": "สรุปเครื่องมือ/เทคโนโลยีที่ใช้" },
+  { "tag": "🏆 ผลลัพธ์และคุณค่าทางวิชาการ", "title": "ผลสัมฤทธิ์และประโยชน์ที่ได้รับ", "description": "สรุปผลการทดลองและความสำเร็จ" }
+]`;
+
+  try {
+    const geminiRes = await callGeminiApi('คุณคือนักวิเคราะห์งานวิจัย สรุปสาระสำคัญเป็น JSON Array เท่านั้น', prompt);
+    if (geminiRes && geminiRes.text) {
+      const cleanJson = geminiRes.text.replace(/```json/gi, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+      if (Array.isArray(parsed) && parsed.length >= 3) {
+        return {
+          success: true,
+          model_version: `SRRU Gemini AI Summarizer (${geminiRes.model || 'Flash Lite'})`,
+          summary_bullets: parsed,
+          generated_at: new Date().toISOString()
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('Gemini summary failed, using fallback summary:', err.message);
+  }
+
+  const { generateAIExecutiveSummary } = require('./aiService');
+  return generateAIExecutiveSummary(project);
+}
+
+/**
+ * Generate AI Redundancy Advice with Gemini
+ */
+async function getGeminiTopicRedundancyAdvice(title_th, abstract_text, top_matches = []) {
+  if (!top_matches || top_matches.length === 0) {
+    return 'หัวข้องานวิจัยมีความแปลกใหม่สูงมาก สามารถดำเนินงานวิจัยตามแผนที่วางไว้ได้เลยครับ';
+  }
+
+  const similarTitles = top_matches.slice(0, 3).map(m => `• "${m.title_th}" (ความซ้ำซ้อน ${m.similarity_percentage}%)`).join('\n');
+  const prompt = `ผู้ใช้วิจัยต้องการเสนอหัวข้อ:
+ชื่อเรื่อง: "${title_th}"
+บทคัดย่อ/รายละเอียด: "${abstract_text || ''}"
+
+ในระบบพบคลังวิจัยเดิมที่มีความคล้ายคลึง:
+${similarTitles}
+
+กรุณาให้คำแนะนำเชิงวิชาการ 2-3 ข้อสั้นๆ เป็นภาษาไทย ในการปรับปรุงมุมมอง, ระเบียบวิธี หรือพื้นที่ศึกษาเพื่อสร้างความแตกต่าง (Differentiation) และเพิ่มความสดใหม่ (Novelty) ให้น่าสนใจยิ่งขึ้น:`;
+
+  try {
+    const geminiRes = await callGeminiApi('คุณคืออาจารย์ผู้เชี่ยวชาญการประเมินโครงร่างวิจัย ให้คำแนะนำที่สร้างสรรค์และกระชับ', prompt);
+    if (geminiRes && geminiRes.text) {
+      return geminiRes.text.trim();
+    }
+  } catch (err) {
+    console.warn('Gemini redundancy advice failed:', err.message);
+  }
+
+  return 'แนะนำให้ปรับขอบเขตประชากรและพื้นที่ศึกษา หรือประยุกต์ใช้โมเดลอัลกอริทึมรุ่นใหม่ร่วมกับข้อมูลเชิงลึก เพื่อเพิ่มความแปลกใหม่และความลุ่มลึกทางวิชาการครับ';
+}
+
 module.exports = {
   callGeminiApi,
   handleGeneralChat,
-  handleDocumentRAGChat
+  handleDocumentRAGChat,
+  generateThesisTopicProposalsWithGemini,
+  generateExecutiveSummaryWithGemini,
+  getGeminiTopicRedundancyAdvice
 };
+
