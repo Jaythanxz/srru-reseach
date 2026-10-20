@@ -8,7 +8,9 @@
       class="group flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-purple-700 via-purple-600 to-emerald-600 text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-white/80"
     >
       <div class="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20">
-        <span class="text-sm sm:text-base">✨</span>
+        <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+        </svg>
         <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border border-white animate-pulse"></span>
       </div>
       <div class="text-left pr-1">
@@ -25,8 +27,10 @@
       <!-- Chat Header -->
       <div class="bg-gradient-to-r from-purple-800 via-purple-700 to-emerald-700 text-white p-3.5 sm:p-4 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-2.5 sm:gap-3">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 flex items-center justify-center text-base sm:text-lg shadow-inner">
-            🤖
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 flex items-center justify-center shadow-inner">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
           </div>
           <div>
             <h3 class="text-xs sm:text-sm font-bold flex items-center gap-1.5">
@@ -37,7 +41,7 @@
                   activeSource === 'gemini' ? 'bg-emerald-400 text-emerald-950' : 'bg-purple-300 text-purple-950'
                 ]"
               >
-                {{ activeSource === 'gemini' ? '⚡ GEMINI AI' : 'ONLINE' }}
+                {{ activeSource === 'gemini' ? 'GEMINI AI' : 'ONLINE' }}
               </span>
             </h3>
             <p class="text-[10px] sm:text-[11px] text-purple-200">ถามตอบงานวิจัย ระเบียบวิธี & คู่มือระบบ</p>
@@ -51,7 +55,9 @@
             title="ล้างการสนทนา"
             class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white text-xs font-bold transition-colors"
           >
-            🔄
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
           </button>
           <!-- Close Button -->
           <button
@@ -59,7 +65,9 @@
             title="ปิดหน้าต่าง"
             class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white text-xs font-bold transition-colors"
           >
-            ✕
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
       </div>
@@ -87,7 +95,9 @@
             v-if="msg.sender === 'ai'"
             class="w-7 h-7 rounded-xl bg-purple-600 text-white flex-shrink-0 flex items-center justify-center text-xs shadow-xs"
           >
-            🤖
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
 
           <div
@@ -103,13 +113,13 @@
 
             <!-- Model/Source Tag -->
             <div v-if="msg.source && msg.sender === 'ai'" class="text-[9px] text-purple-600 dark:text-purple-400 font-semibold flex items-center gap-1 pt-1 border-t border-purple-50 dark:border-slate-700/60">
-              <span>{{ msg.source === 'gemini' ? '⚡ ขับเคลื่อนโดย Google Gemini AI' : '💡 SRRU Academic Knowledge Engine' }}</span>
+              <span>{{ msg.source === 'gemini' ? 'ขับเคลื่อนโดย Google Gemini AI' : 'SRRU Academic Knowledge Engine' }}</span>
             </div>
 
             <!-- Recommendation Project Cards if any -->
             <div v-if="msg.recommendedProjects && msg.recommendedProjects.length > 0" class="pt-2 border-t border-purple-100/80 dark:border-slate-700 space-y-1.5">
               <div class="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase flex items-center gap-1">
-                <span>📄 งานวิจัยที่เกี่ยวข้องในคลัง มรภ.สุรินทร์:</span>
+                <span>งานวิจัยที่เกี่ยวข้องในคลัง มรภ.สุรินทร์:</span>
               </div>
               <router-link
                 v-for="p in msg.recommendedProjects"
@@ -137,7 +147,9 @@
         <!-- Typing Indicator -->
         <div v-if="isTyping" class="flex gap-2.5 justify-start">
           <div class="w-7 h-7 rounded-xl bg-purple-600 text-white flex-shrink-0 flex items-center justify-center text-xs">
-            🤖
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
           <div class="bg-white dark:bg-slate-800 border border-purple-100 dark:border-slate-700 p-3 rounded-2xl rounded-tl-none flex items-center gap-2 shadow-2xs">
             <span class="text-[11px] text-purple-600 dark:text-purple-300 font-medium animate-pulse">กำลังประมวลผลคำตอบ...</span>
@@ -181,17 +193,17 @@ const messageContainer = ref(null);
 const activeSource = ref('gemini');
 
 const quickPrompts = [
-  { label: '🌾 ข้าวหอมมะลิสุรินทร์', text: 'มีงานวิจัยเกี่ยวกับข้าวหอมมะลิสุรินทร์หรือการเกษตรไหม' },
-  { label: '📝 วิธีส่งเล่มวิจัย', text: 'ขั้นตอนการส่งงานวิจัยและการอนุมัติของอาจารย์ทำอย่างไร' },
-  { label: '🤖 Hybrid Rec คืออะไร', text: 'ระบบแนะนำงานวิจัยแบบ Hybrid Recommendation และ Thai NLP ทำงานอย่างไร' },
-  { label: '💡 แนะนำหัวข้อโปรเจกต์', text: 'ช่วยแนะนำหัวข้อโปรเจกต์จบและวิทยานิพนธ์ที่น่าสนใจสำหรับนักศึกษาหน่อย' },
-  { label: '👥 สิทธิ์แต่ละบทบาท', text: 'ระบบมีบทบาทอะไรบ้าง และนักศึกษากับอาจารย์มีสิทธิ์ทำอะไรได้บ้าง' },
-  { label: '📖 โครงสร้าง 5 บท', text: 'รายงานโครงงานวิจัย 5 บทมีหัวข้ออะไรบ้างและเขียนอย่างไร' }
+  { label: 'ข้าวหอมมะลิสุรินทร์', text: 'มีงานวิจัยเกี่ยวกับข้าวหอมมะลิสุรินทร์หรือการเกษตรไหม' },
+  { label: 'วิธีส่งเล่มวิจัย', text: 'ขั้นตอนการส่งงานวิจัยและการอนุมัติของอาจารย์ทำอย่างไร' },
+  { label: 'Hybrid Rec คืออะไร', text: 'ระบบแนะนำงานวิจัยแบบ Hybrid Recommendation และ Thai NLP ทำงานอย่างไร' },
+  { label: 'แนะนำหัวข้อโปรเจกต์', text: 'ช่วยแนะนำหัวข้อโปรเจกต์จบและวิทยานิพนธ์ที่น่าสนใจสำหรับนักศึกษาหน่อย' },
+  { label: 'สิทธิ์แต่ละบทบาท', text: 'ระบบมีบทบาทอะไรบ้าง และนักศึกษากับอาจารย์มีสิทธิ์ทำอะไรได้บ้าง' },
+  { label: 'โครงสร้าง 5 บท', text: 'รายงานโครงงานวิจัย 5 บทมีหัวข้ออะไรบ้างและเขียนอย่างไร' }
 ];
 
 const welcomeMessage = {
   sender: 'ai',
-  text: 'สวัสดีครับ! ผมคือ **AI ผู้ช่วยวิจัยอัจฉริยะ มรภ.สุรินทร์** 🤖✨\n\nสามารถพิมพ์ถามได้ทุกเรื่อง ทั้ง:\n* 🔍 **สืบค้นงานวิจัย & บทคัดย่อ** ในคลัง มรภ.สุรินทร์\n* 📝 **วิธีส่งเล่มวิจัย & ตรวจอนุมัติ** ในระบบ\n* 💡 **ไอเดียหัวข้อโปรเจกต์จบ** & คำแนะนำวิชาการ\n* 🧠 **ทฤษฎี AI & สถิติ** (Hybrid Recommendation, Thai NLP, F1-score)\n\nหรือคลิกหัวข้อด่วนด้านบนได้เลยครับ!',
+  text: 'สวัสดีครับ ผมคือ **AI ผู้ช่วยวิจัย มรภ.สุรินทร์**\n\nสามารถสอบถามข้อมูลได้ทั้ง:\n* **สืบค้นงานวิจัย & บทคัดย่อ** ในคลัง มรภ.สุรินทร์\n* **วิธีส่งเล่มวิจัย & ตรวจอนุมัติ** ในระบบ\n* **ไอเดียหัวข้อโปรเจกต์จบ** & คำแนะนำวิชาการ\n* **ทฤษฎี AI & สถิติ** (Hybrid Recommendation, Thai NLP, F1-score)\n\nหรือคลิกหัวข้อด่วนด้านบนได้เลยครับ',
   source: 'gemini',
   time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
 };
