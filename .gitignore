@@ -33,4 +33,5 @@ env/
 # Keep placeholder sample papers
 server/uploads/thesis_*
 server/uploads/*.tmp
-server/uploads/srru_db_store.json
+# Allow srru_db_store.json to be committed for Render deployment
+
