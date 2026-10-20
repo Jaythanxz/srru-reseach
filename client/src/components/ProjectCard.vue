@@ -25,7 +25,12 @@
             : 'bg-purple-50 dark:bg-slate-800 hover:bg-purple-100 dark:hover:bg-purple-950 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800'
         ]"
       >
-        <span>{{ projectStore.isCompared(project.project_id) ? '✓' : '+' }}</span>
+        <svg v-if="projectStore.isCompared(project.project_id)" class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <svg v-else class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
         <span>เปรียบเทียบ</span>
       </button>
     </div>
@@ -65,7 +70,9 @@
               'bg-indigo-100 dark:bg-indigo-950 text-indigo-900 dark:text-indigo-200 border-indigo-300 dark:border-indigo-800'
             ]"
           >
-            <span>{{ getDocTypeIcon(project.project_type) }}</span>
+            <svg class="w-3.5 h-3.5 text-current opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
             <span>{{ getDocTypeLabel(project.project_type) }}</span>
           </span>
 
@@ -180,17 +187,6 @@ const getDocTypeLabel = (type) => {
     RESEARCH_REPORT: 'รายงานวิจัยสถาบัน'
   };
   return map[type] || 'วิทยานิพนธ์';
-};
-
-const getDocTypeIcon = (type) => {
-  const map = {
-    THESIS: '🎓',
-    SENIOR_PROJECT: '💻',
-    INDEPENDENT_STUDY: '📖',
-    RESEARCH_ARTICLE: '📑',
-    RESEARCH_REPORT: '🏢'
-  };
-  return map[type] || '📄';
 };
 
 const splitKeywords = (kwStr) => {

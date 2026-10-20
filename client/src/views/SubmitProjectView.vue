@@ -28,7 +28,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="text-lg font-bold">
-              {{ redundancyResult.risk_level === 'HIGH' ? '⚠️' : redundancyResult.risk_level === 'MODERATE' ? '💡' : '✅' }}
+              
             </span>
             <div class="font-bold text-xs sm:text-sm">
               ผลการตรวจจับความซ้ำซ้อน AI (Topic Redundancy Check):
@@ -65,7 +65,7 @@
         <!-- Gemini AI Differentiation Advice -->
         <div v-if="redundancyResult.ai_advice" class="mt-2 p-3 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/80 text-xs text-purple-900 dark:text-purple-200 space-y-1">
           <div class="font-bold flex items-center gap-1.5 text-purple-800 dark:text-purple-300">
-            <span>⚡ คำแนะนำสร้างความแปลกใหม่จาก Gemini AI:</span>
+            <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> คำแนะนำสร้างความแปลกใหม่จาก Gemini AI:</span>
           </div>
           <div class="leading-relaxed opacity-95 whitespace-pre-line">{{ redundancyResult.ai_advice }}</div>
         </div>
@@ -79,7 +79,7 @@
               :key="m.project_id"
               class="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 space-y-1"
             >
-              <div class="font-bold line-clamp-1 text-[11px]">📄 {{ m.title_th }}</div>
+              <div class="font-bold line-clamp-1 text-[11px] flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> {{ m.title_th }}</div>
               <div class="flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
                 <span>พ.ศ. {{ (m.publish_year ? parseInt(m.publish_year) : 2024) + 543 }} • {{ m.faculty_name }}</span>
                 <span class="font-bold text-purple-700 dark:text-purple-300">คล้าย {{ m.similarity_percentage }}%</span>
@@ -246,7 +246,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-              <span>📷 รูปภาพผู้วิจัย / ภาพหน้าปกงานวิจัย (Author Photo & Cover Art)</span>
+              <span>รูปภาพผู้วิจัย / ภาพหน้าปกงานวิจัย (Author Photo & Cover Art)</span>
               <span class="text-[10px] text-purple-600 dark:text-purple-400 font-normal">(ไม่บังคับ - แนะนำให้อัปโหลดเพื่อความสวยงาม)</span>
             </label>
             <span v-if="selectedImage" class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
@@ -290,7 +290,7 @@
               <div class="space-y-0.5 text-xs">
                 <div class="font-bold text-slate-900 dark:text-white">{{ selectedImage.name }}</div>
                 <div class="text-[11px] text-purple-600 dark:text-purple-400">{{ (selectedImage.size / 1024).toFixed(1) }} KB</div>
-                <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">✨ รูปภาพพร้อมใช้งานสำหรับหน้าปกและโปรไฟล์ผู้วิจัย</div>
+                <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">รูปภาพพร้อมใช้งานสำหรับหน้าปกและโปรไฟล์ผู้วิจัย</div>
               </div>
             </div>
             <button
@@ -388,11 +388,11 @@ const submitting = ref(false);
 const redundancyResult = ref(null);
 
 const docTypes = [
-  { value: 'THESIS', label: 'วิทยานิพนธ์', icon: '🎓', desc: 'ระดับ ป.โท / ป.เอก' },
-  { value: 'SENIOR_PROJECT', label: 'โปรเจกต์จบ', icon: '💻', desc: 'ระดับปริญญาตรี' },
-  { value: 'INDEPENDENT_STUDY', label: 'ค้นคว้าอิสระ (IS)', icon: '📖', desc: 'การศึกษาเฉพาะเรื่อง' },
-  { value: 'RESEARCH_ARTICLE', label: 'บทความวิจัย', icon: '📑', desc: 'ผลงานตีพิมพ์วิชาการ' },
-  { value: 'RESEARCH_REPORT', label: 'รายงานวิจัยสถาบัน', icon: '🏢', desc: 'ทุนวิจัยคณะ/มรภ.' }
+  { value: 'THESIS', label: 'วิทยานิพนธ์', icon: '', desc: 'ระดับ ป.โท / ป.เอก' },
+  { value: 'SENIOR_PROJECT', label: 'โปรเจกต์จบ', icon: '', desc: 'ระดับปริญญาตรี' },
+  { value: 'INDEPENDENT_STUDY', label: 'ค้นคว้าอิสระ (IS)', icon: '', desc: 'การศึกษาเฉพาะเรื่อง' },
+  { value: 'RESEARCH_ARTICLE', label: 'บทความวิจัย', icon: '', desc: 'ผลงานตีพิมพ์วิชาการ' },
+  { value: 'RESEARCH_REPORT', label: 'รายงานวิจัยสถาบัน', icon: '', desc: 'ทุนวิจัยคณะ/มรภ.' }
 ];
 
 const form = reactive({

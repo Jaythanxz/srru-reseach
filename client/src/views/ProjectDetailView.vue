@@ -80,11 +80,11 @@
             </p>
           </div>
 
-          <!-- 📌 Executive Factsheet (สรุปใจความสำคัญ 4 มิติ เข้าใจใน 5 วินาที) -->
+          <!--  Executive Factsheet (สรุปใจความสำคัญ 4 มิติ เข้าใจใน 5 วินาที) -->
           <div v-if="factsheetCards" class="space-y-2 pt-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-                <span>📌</span>
+                <span></span>
                 <span>สรุปใจความสำคัญใน 4 มิติ (Executive Factsheet)</span>
               </span>
               <span class="text-[10px] text-purple-700 dark:text-purple-300 font-bold bg-purple-50 dark:bg-purple-950/80 px-2.5 py-0.5 rounded-full border border-purple-200 dark:border-purple-800">
@@ -369,7 +369,7 @@
                   : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-950/60 border border-purple-100 dark:border-slate-700'
               ]"
             >
-              <span>📄</span>
+              <span></span>
               <span>อ่านเอกสารฉบับเต็ม (PDF Reader)</span>
             </button>
 
@@ -430,7 +430,7 @@
 
           <!-- Quick Prompts Toolbar -->
           <div class="bg-purple-50/80 dark:bg-slate-800/80 border-b border-purple-100 dark:border-purple-900/40 p-3 flex items-center gap-2 overflow-x-auto text-xs">
-            <span class="text-purple-800 dark:text-purple-300 font-bold whitespace-nowrap text-[11px]">💡 คำถามแนะนำ:</span>
+            <span class="text-purple-800 dark:text-purple-300 font-bold whitespace-nowrap text-[11px]"> คำถามแนะนำ:</span>
             <button
               v-for="(qp, idx) in quickRagPrompts"
               :key="idx"
@@ -481,7 +481,7 @@
 
                 <!-- Section Citations & Reference Snippets -->
                 <div v-if="msg.citations && msg.citations.length > 0" class="pt-2 border-t border-purple-100 dark:border-slate-700 space-y-2">
-                  <div class="text-[11px] font-bold text-purple-800 dark:text-purple-300">📌 หน้าและเนื้อหาที่เกี่ยวข้องในเล่ม:</div>
+                  <div class="text-[11px] font-bold text-purple-800 dark:text-purple-300"> หน้าและเนื้อหาที่เกี่ยวข้องในเล่ม:</div>
                   <div class="grid grid-cols-1 gap-2">
                     <div
                       v-for="(cit, cIdx) in msg.citations"
@@ -647,7 +647,7 @@
             >
               <div class="flex items-center justify-between">
                 <span class="font-black text-sm text-purple-900 dark:text-purple-200 flex items-center gap-1.5">
-                  <span>📄</span>
+                  <span></span>
                   <span>EndNote / Zotero</span>
                 </span>
                 <span class="px-2 py-0.5 rounded bg-purple-200 dark:bg-purple-900 text-purple-900 dark:text-purple-200 text-[10px] font-black">.RIS</span>
@@ -803,7 +803,7 @@
         </div>
 
         <div class="text-[10px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl text-left border border-slate-200/60 dark:border-slate-800">
-          💡 <strong>คำแนะนำ:</strong> นำรูป QR Code นี้ไปพิมพ์แปะบนบอร์ดนิทรรศการ หรือหน้าแรกของเอกสารวิจัย เพื่อให้ผู้เข้าร่วมงานสแกนอ่านไฟล์ PDF ฉบับเต็มได้ทันที
+           <strong>คำแนะนำ:</strong> นำรูป QR Code นี้ไปพิมพ์แปะบนบอร์ดนิทรรศการ หรือหน้าแรกของเอกสารวิจัย เพื่อให้ผู้เข้าร่วมงานสแกนอ่านไฟล์ PDF ฉบับเต็มได้ทันที
         </div>
       </div>
     </div>
@@ -941,11 +941,11 @@ const factsheetCards = computed(() => {
 });
 
 const quickRagPrompts = [
-  { label: '💡 สรุป 3 บรรทัด', text: 'ช่วยสรุปเล่มนี้ให้ฟังแบบกระชับใน 3 บรรทัดหน่อยครับ' },
+  { label: ' สรุป 3 บรรทัด', text: 'ช่วยสรุปเล่มนี้ให้ฟังแบบกระชับใน 3 บรรทัดหน่อยครับ' },
   { label: '🛠️ ต้องมีความรู้อะไรบ้าง', text: 'ถ้าอยากทำโปรเจกต์ต่อยอดเล่มนี้ ต้องมีความรู้หรือทักษะด้านไหนบ้าง?' },
   { label: '🌾 ประโยชน์ต่อสุรินทร์', text: 'คนสุรินทร์และชุมชนท้องถิ่นได้ประโยชน์อะไรจากผลงานเล่มนี้?' },
   { label: '⚠️ ข้อจำกัด & จุดพัฒนาต่อ', text: 'งานวิจัยนี้มีข้อจำกัดหรือจุดที่ควรนำไปพัฒนาต่อยอดในอนาคตอย่างไร?' },
-  { label: '📊 ผลลัพธ์ & สถิติ', text: 'ผลการทดลองและค่าความแม่นยำทางสถิติของเล่มนี้เป็นอย่างไร?' },
+  { label: ' ผลลัพธ์ & สถิติ', text: 'ผลการทดลองและค่าความแม่นยำทางสถิติของเล่มนี้เป็นอย่างไร?' },
   { label: '👥 กลุ่มตัวอย่าง & ข้อมูล', text: 'กลุ่มตัวอย่างและชุดข้อมูลที่ใช้ในการวิจัยนี้เก็บมาจากที่ไหน?' }
 ];
 
@@ -992,7 +992,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
       };
     } else {
       return {
-        answer: `🔎 **ผลการวิเคราะห์รูปภาพเชิงวิชาการ:**\n\nระบบประมวลผลองค์ประกอบของภาพ **"${imgName || 'ภาพที่แนบ'}"** เรียบร้อยแล้วครับ! 📊💡\n\n- **การเชื่อมโยงเนื้อหา:** โครงสร้างและข้อมูลในภาพสอดคล้องกับขั้นตอนการทดลองและสถาปัตยกรรมระบบในบทที่ 3 ของเล่ม **"${titleTh}"**\n- **ข้อเสนอแนะ:** สามารถนำผลลัพธ์นี้ไปเป็นภาพประกอบในเล่มรายงานบทที่ 4 เพื่อเพิ่มความชัดเจนในการนำเสนอผลงานได้เลยครับ!`,
+        answer: `🔎 **ผลการวิเคราะห์รูปภาพเชิงวิชาการ:**\n\nระบบประมวลผลองค์ประกอบของภาพ **"${imgName || 'ภาพที่แนบ'}"** เรียบร้อยแล้วครับ! \n\n- **การเชื่อมโยงเนื้อหา:** โครงสร้างและข้อมูลในภาพสอดคล้องกับขั้นตอนการทดลองและสถาปัตยกรรมระบบในบทที่ 3 ของเล่ม **"${titleTh}"**\n- **ข้อเสนอแนะ:** สามารถนำผลลัพธ์นี้ไปเป็นภาพประกอบในเล่มรายงานบทที่ 4 เพื่อเพิ่มความชัดเจนในการนำเสนอผลงานได้เลยครับ!`,
         confidence: 0.95,
         citations: [
           { section: 'บทที่ 3: ระเบียบวิธีวิจัยและการทดลอง', page: '18-26', snippet: `โครงสร้างและสถาปัตยกรรมของงานวิจัย ${titleTh}` }
@@ -1004,7 +1004,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
   // 0. Greetings & Casual chit-chat
   if (qLower.includes('สวัสดี') || qLower.includes('ดีครับ') || qLower.includes('ดีค่ะ') || qLower.includes('hello') || qLower.includes('hi') || qLower.includes('หวัดดี')) {
     return {
-      answer: `สวัสดีครับ! ยินดีที่ได้คุยกันนะ 😊 ผมเป็นผู้ช่วย AI ประจำเล่ม **"${titleTh}"** ครับ\n\nอยากรู้เรื่องไหนในเล่มนี้ เช่น พี่ๆ เค้าเขียนด้วยภาษาอะไร, เก็บข้อมูลที่ไหนในสุรินทร์, หรือผลทดลองดีไหม พิมพ์ถามผมเป็นภาษาพูดสบายๆ ได้เลยนะครับ! เดี๋ยวผมช่วยเล่าให้ฟังครับ ✨`,
+      answer: `สวัสดีครับ! ยินดีที่ได้คุยกันนะ  ผมเป็นผู้ช่วย AI ประจำเล่ม **"${titleTh}"** ครับ\n\nอยากรู้เรื่องไหนในเล่มนี้ เช่น พี่ๆ เค้าเขียนด้วยภาษาอะไร, เก็บข้อมูลที่ไหนในสุรินทร์, หรือผลทดลองดีไหม พิมพ์ถามผมเป็นภาษาพูดสบายๆ ได้เลยนะครับ! เดี๋ยวผมช่วยเล่าให้ฟังครับ ✨`,
       confidence: 0.99,
       citations: [
         { section: 'บทคัดย่อ (Abstract)', page: 'ก-ข', snippet: 'ภาพรวมของผลงานวิจัย' }
@@ -1023,7 +1023,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
   // 1. Question: 3-line Summary
   if (qLower.includes('3 บรรทัด') || qLower.includes('สรุปสั้น') || qLower.includes('สรุปให้ฟังหน่อย') || qLower.includes('สรุปง่าย')) {
     return {
-      answer: `สรุปเล่มนี้ให้ฟังใน 3 บรรทัดแบบเข้าใจทันทีครับ! 💡\n\n1. **โจทย์:** เกิดจากปัญหา ${abstractText.slice(0, 100)}...\n2. **วิธีแก้:** พี่ๆ เค้าใช้เทคโนโลยี **${tech.split(',')[0] || tech}** พัฒนาเป็นระบบแก้ปัญหาเรื่อง **${keywords.split(',')[0] || keywords}**\n3. **ผลลัพธ์:** ระบบทำงานได้ผลจริง มีความแม่นยำสูง และกลุ่มผู้ใช้ใน ${faculty} ให้คะแนนความพึงพอใจระดับ **มากที่สุด (x̄ = 4.78)** ครับ!`,
+      answer: `สรุปเล่มนี้ให้ฟังใน 3 บรรทัดแบบเข้าใจทันทีครับ! \n\n1. **โจทย์:** เกิดจากปัญหา ${abstractText.slice(0, 100)}...\n2. **วิธีแก้:** พี่ๆ เค้าใช้เทคโนโลยี **${tech.split(',')[0] || tech}** พัฒนาเป็นระบบแก้ปัญหาเรื่อง **${keywords.split(',')[0] || keywords}**\n3. **ผลลัพธ์:** ระบบทำงานได้ผลจริง มีความแม่นยำสูง และกลุ่มผู้ใช้ใน ${faculty} ให้คะแนนความพึงพอใจระดับ **มากที่สุด (x̄ = 4.78)** ครับ!`,
       confidence: 0.99,
       citations: [
         { section: 'บทคัดย่อ (Abstract) สรุปภาพรวม', page: 'ก', snippet: abstractText.slice(0, 120) + '...' }
@@ -1034,7 +1034,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
   // 2. Question: Prerequisites / Required Knowledge
   if (qLower.includes('ความรู้') || qLower.includes('ทักษะ') || qLower.includes('สกิล') || qLower.includes('เตรียมตัว') || qLower.includes('ทำตาม') || qLower.includes('พื้นฐาน')) {
     return {
-      answer: `ถ้าอยากทำโปรเจกต์ต่อยอดเล่มนี้ แนะนำเตรียมทักษะเหล่านี้ไว้เลยครับ! 🛠️\n\n- **1. ภาษาโปรแกรม & Framework:** แนะนำฝึก **${tech}** เป็นหลักครับ\n- **2. ความรู้เฉพาะด้าน:** ควรเข้าใจกระบวนการทำงานของ **${keywords}** และการจัดการฐานข้อมูล\n- **3. การลงพื้นที่:** ต้องรู้วิธีเก็บรวบรวมข้อมูลจริงจากกลุ่มตัวอย่างในพื้นที่สุรินทร์หรือ ${faculty} ครับ\n\n📌 *ทริกแนะนำ:* สามารถศึกษาโค้ดโครงสร้างและ Flowchart ในบทที่ 3 ของเล่มนี้เป็นแนวทางตั้งต้นได้เลยครับ!`,
+      answer: `ถ้าอยากทำโปรเจกต์ต่อยอดเล่มนี้ แนะนำเตรียมทักษะเหล่านี้ไว้เลยครับ! 🛠️\n\n- **1. ภาษาโปรแกรม & Framework:** แนะนำฝึก **${tech}** เป็นหลักครับ\n- **2. ความรู้เฉพาะด้าน:** ควรเข้าใจกระบวนการทำงานของ **${keywords}** และการจัดการฐานข้อมูล\n- **3. การลงพื้นที่:** ต้องรู้วิธีเก็บรวบรวมข้อมูลจริงจากกลุ่มตัวอย่างในพื้นที่สุรินทร์หรือ ${faculty} ครับ\n\n *ทริกแนะนำ:* สามารถศึกษาโค้ดโครงสร้างและ Flowchart ในบทที่ 3 ของเล่มนี้เป็นแนวทางตั้งต้นได้เลยครับ!`,
       confidence: 0.96,
       citations: [
         { section: 'บทที่ 3: ระเบียบวิธีวิจัยและสถาปัตยกรรมระบบ', page: '14-28', snippet: `เครื่องมือ ภาษา และสภาพแวดล้อมในการพัฒนาระบบ ${titleTh}` }
@@ -1080,7 +1080,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
   // 3. Dataset & Samples
   if (qLower.includes('กลุ่มตัวอย่าง') || qLower.includes('ประชากร') || qLower.includes('sample') || qLower.includes('ข้อมูล') || qLower.includes('dataset') || qLower.includes('ชุดข้อมูล') || qLower.includes('เก็บข้อมูล') || qLower.includes('มาจากไหน') || qLower.includes('กี่คน') || qLower.includes('กี่อัน')) {
     return {
-      answer: `อ๋อ เรื่องชุดข้อมูล (Dataset) พี่ๆ เค้าลงพื้นที่เก็บข้อมูลจริงในสุรินทร์เลยครับ! 📊\n\n- **แหล่งข้อมูล:** รวบรวมข้อมูลจริงจากพื้นที่เป้าหมายในจังหวัดสุรินทร์ และจากคณาจารย์/นักศึกษาใน ${faculty} (${dept})\n- **เนื้อหาข้อมูล:** เน้นข้อมูลที่เกี่ยวกับ **${keywords}** โดยเฉพาะเลยครับ\n- **ความน่าเชื่อถือ:** มีการนำข้อมูลมาคัดกรอง ทำความสะอาด (Data Preprocessing) และได้ ${advisor} ช่วยตรวจสอบความถูกต้องก่อนเอาไปเทรนโมเดลครับ`,
+      answer: `อ๋อ เรื่องชุดข้อมูล (Dataset) พี่ๆ เค้าลงพื้นที่เก็บข้อมูลจริงในสุรินทร์เลยครับ! \n\n- **แหล่งข้อมูล:** รวบรวมข้อมูลจริงจากพื้นที่เป้าหมายในจังหวัดสุรินทร์ และจากคณาจารย์/นักศึกษาใน ${faculty} (${dept})\n- **เนื้อหาข้อมูล:** เน้นข้อมูลที่เกี่ยวกับ **${keywords}** โดยเฉพาะเลยครับ\n- **ความน่าเชื่อถือ:** มีการนำข้อมูลมาคัดกรอง ทำความสะอาด (Data Preprocessing) และได้ ${advisor} ช่วยตรวจสอบความถูกต้องก่อนเอาไปเทรนโมเดลครับ`,
       confidence: 0.94,
       citations: [
         { section: 'บทที่ 3: ขอบเขตประชากร กลุ่มตัวอย่าง และการเก็บรวบรวมข้อมูล', page: '18-24', snippet: `กระบวนการรวบรวมชุดข้อมูลและการสุ่มตัวอย่างเพื่อการวิจัย ${titleTh}` }
@@ -1091,7 +1091,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
   // 4. Problem & Objectives
   if (qLower.includes('ปัญหา') || qLower.includes('ที่มา') || qLower.includes('ทำไม') || qLower.includes('วัตถุประสงค์') || qLower.includes('objective') || qLower.includes('เป้าหมาย') || qLower.includes('จุดประสงค์') || qLower.includes('แก้ปัญหา') || qLower.includes('ทำไปทำไม')) {
     return {
-      answer: `ที่มาของโปรเจกต์นี้น่าสนใจมากครับ! 💡\n\n- **ปัญหาที่เจอ:** ${abstractText.slice(0, 180)}...\n- **เป้าหมายที่อยากแก้:**\n  1. อยากสร้างระบบ **"${titleTh}"** ขึ้นมาช่วยแบ่งเบาภาระ\n  2. เอาเทคโนโลยี **${tech.split(',')[0]}** มาช่วยทำให้ทำงานได้เร็วและแม่นยำขึ้น\n  3. ให้คนในพื้นที่สุรินทร์และ มรภ.สุรินทร์ ได้มีเครื่องมือดีๆ ไว้ใช้งานจริงครับ`,
+      answer: `ที่มาของโปรเจกต์นี้น่าสนใจมากครับ! \n\n- **ปัญหาที่เจอ:** ${abstractText.slice(0, 180)}...\n- **เป้าหมายที่อยากแก้:**\n  1. อยากสร้างระบบ **"${titleTh}"** ขึ้นมาช่วยแบ่งเบาภาระ\n  2. เอาเทคโนโลยี **${tech.split(',')[0]}** มาช่วยทำให้ทำงานได้เร็วและแม่นยำขึ้น\n  3. ให้คนในพื้นที่สุรินทร์และ มรภ.สุรินทร์ ได้มีเครื่องมือดีๆ ไว้ใช้งานจริงครับ`,
       confidence: 0.98,
       citations: [
         { section: 'บทที่ 1: ความเป็นมาและความสำคัญของปัญหา', page: '1-4', snippet: 'สภาพปัญหา ที่มา และความจำเป็นในการพัฒนางานวิจัย' },
@@ -1103,7 +1103,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
   // 5. Surin Local Impact
   if (qLower.includes('สุรินทร์') || qLower.includes('ท้องถิ่น') || qLower.includes('impact') || qLower.includes('ชุมชน') || qLower.includes('ประโยชน์') || qLower.includes('นำไปใช้') || qLower.includes('ต่อยอด') || qLower.includes('ช่วยอะไร')) {
     return {
-      answer: `งานนี้บอกเลยว่ามีประโยชน์ต่อจังหวัดสุรินทร์เราเต็มๆ เลยครับ! 🌾✨\n\n- **ประโยชน์ต่อชุมชน:** ช่วยยกระดับความรู้และการทำมาหากินด้าน **${keywords}** ชุมชนสามารถเอาเทคโนโลยีนี้ไปปรับใช้ได้จริง\n- **ประโยชน์ต่อ มรภ.สุรินทร์:** เป็นผลงานวิจัยต้นแบบที่คณาจารย์และรุ่นน้องใน ${faculty} สามารถหยิบเอาไปต่อยอดทำวิจัยใหม่ๆ ได้เลย\n- **การขยายผล:** ตัวระบบพร้อมที่จะถ่ายทอดองค์ความรู้ให้วิสาหกิจชุมชนหรือหน่วยงานในสุรินทร์นำไปใช้งานต่อได้ทันทีครับ`,
+      answer: `งานนี้บอกเลยว่ามีประโยชน์ต่อจังหวัดสุรินทร์เราเต็มๆ เลยครับ! \n\n- **ประโยชน์ต่อชุมชน:** ช่วยยกระดับความรู้และการทำมาหากินด้าน **${keywords}** ชุมชนสามารถเอาเทคโนโลยีนี้ไปปรับใช้ได้จริง\n- **ประโยชน์ต่อ มรภ.สุรินทร์:** เป็นผลงานวิจัยต้นแบบที่คณาจารย์และรุ่นน้องใน ${faculty} สามารถหยิบเอาไปต่อยอดทำวิจัยใหม่ๆ ได้เลย\n- **การขยายผล:** ตัวระบบพร้อมที่จะถ่ายทอดองค์ความรู้ให้วิสาหกิจชุมชนหรือหน่วยงานในสุรินทร์นำไปใช้งานต่อได้ทันทีครับ`,
       confidence: 0.95,
       citations: [
         { section: 'บทที่ 5: การนำผลงานวิจัยไปใช้ประโยชน์เชิงพื้นที่และข้อเสนอแนะ', page: '63-66', snippet: 'แนวทางการถ่ายทอดเทคโนโลยีและการขยายผลสู่ชุมชนจังหวัดสุรินทร์' }
@@ -1123,7 +1123,7 @@ const getLocalRagAnswer = (p, text, attachedImg = null, imgName = null) => {
     : abstractText.slice(0, 250);
 
   return {
-    answer: `สำหรับเรื่องนี้ ในเล่ม **"${titleTh}"** ของพี่ๆ (${authors}) เล่าไว้แบบนี้ครับ:\n\n"${highlightText}"\n\n📌 **สรุปเข้าใจง่ายๆ:** เล่มนี้เป็น${docType} ปี พ.ศ. ${yearBE} สังกัด ${faculty} โดยมี ${advisor} เป็นอาจารย์ที่ปรึกษา หลักๆ เค้าเน้นใช้เทคโนโลยี **${tech}** เพื่อแก้ปัญหาเรื่อง **${keywords}** ครับ! ถ้าอยากรู้ลึกตรงไหนเพิ่ม บอกผมได้เลยนะ เดี๋ยวผมสรุปให้ฟังครับ 😊`,
+    answer: `สำหรับเรื่องนี้ ในเล่ม **"${titleTh}"** ของพี่ๆ (${authors}) เล่าไว้แบบนี้ครับ:\n\n"${highlightText}"\n\n **สรุปเข้าใจง่ายๆ:** เล่มนี้เป็น${docType} ปี พ.ศ. ${yearBE} สังกัด ${faculty} โดยมี ${advisor} เป็นอาจารย์ที่ปรึกษา หลักๆ เค้าเน้นใช้เทคโนโลยี **${tech}** เพื่อแก้ปัญหาเรื่อง **${keywords}** ครับ! ถ้าอยากรู้ลึกตรงไหนเพิ่ม บอกผมได้เลยนะ เดี๋ยวผมสรุปให้ฟังครับ `,
     confidence: 0.92,
     citations: [
       { section: 'บทคัดย่อ (Abstract) และสาระสำคัญ', page: 'ก-ข', snippet: highlightText.slice(0, 100) + '...' },
@@ -1306,28 +1306,28 @@ const localImpactDimensions = computed(() => {
     {
       id: 'agri',
       name: 'เกษตรกรรม & ข้าวหอมมะลิสุรินทร์',
-      icon: '🌾',
+      icon: '',
       score: hasAgri ? 94 : 45,
       description: hasAgri ? 'ยกระดับมาตรฐานผลผลิตเกษตรอินทรีย์และข้าวหอมมะลิทุ่งกุลาร้องไห้' : 'ส่งเสริมองค์ความรู้และห่วงโซ่อุปทานภาคการเกษตรทางอ้อม'
     },
     {
       id: 'silk',
       name: 'หัตถกรรมผ้าไหม & เศรษฐกิจสร้างสรรค์',
-      icon: '🧵',
+      icon: '',
       score: hasSilk ? 96 : 38,
       description: hasSilk ? 'อนุรักษ์ลวดลายผ้าไหมโบราณสุรินทร์และต่อยอดสู่ตลาดสากล' : 'เชื่อมโยงหัตถกรรมชุมชนและผลิตภัณฑ์ท้องถิ่น'
     },
     {
       id: 'tour',
       name: 'การท่องเที่ยว วัฒนธรรม & Soft Power',
-      icon: '🐘',
+      icon: '',
       score: hasTourism ? 92 : 50,
       description: hasTourism ? 'ขับเคลื่อนเศรษฐกิจวัฒนธรรมและการท่องเที่ยวเชิงนิเวศสุรินทร์' : 'เสริมสร้างอัตลักษณ์และคุณค่าชุมชนท้องถิ่น'
     },
     {
       id: 'tech',
       name: 'นวัตกรรมดิจิทัล & เทคโนโลยีสารสนเทศ',
-      icon: '💡',
+      icon: '',
       score: hasTech ? 95 : 60,
       description: hasTech ? 'พัฒนาระบบ AI และซอฟต์แวร์ต้นแบบสำหรับแก้ไขปัญหาจริง' : 'ประยุกต์ใช้เครื่องมือดิจิทัลในการประมวลผลข้อมูล'
     }
@@ -1347,13 +1347,13 @@ const getDocTypeLabel = (type) => {
 
 const getDocTypeIcon = (type) => {
   const map = {
-    THESIS: '🎓',
-    SENIOR_PROJECT: '💻',
-    INDEPENDENT_STUDY: '📖',
-    RESEARCH_ARTICLE: '📑',
-    RESEARCH_REPORT: '🏢'
+    THESIS: '',
+    SENIOR_PROJECT: '',
+    INDEPENDENT_STUDY: '',
+    RESEARCH_ARTICLE: '',
+    RESEARCH_REPORT: ''
   };
-  return map[type] || '📄';
+  return map[type] || '';
 };
 
 const splitKeywords = (kwStr) => {

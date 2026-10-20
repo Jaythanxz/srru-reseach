@@ -24,7 +24,9 @@
           :disabled="projectStore.comparedIds.length < 2"
           class="px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-emerald-500 hover:from-purple-500 hover:to-emerald-400 disabled:opacity-50 text-white font-black text-xs transition-all shadow-xs flex items-center gap-1.5"
         >
-          <span>⚡</span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
           <span>{{ projectStore.comparedIds.length >= 2 ? 'เปิดตารางสังเคราะห์ AI' : 'เลือกอีก 1 เล่ม' }}</span>
         </button>
 

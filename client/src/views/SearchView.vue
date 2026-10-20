@@ -78,7 +78,7 @@
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 ]"
               >
-                <span>🧠</span>
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 <span>Semantic AI</span>
               </button>
               <button
@@ -90,7 +90,7 @@
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 ]"
               >
-                <span>🔍</span>
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 <span>ตรงตัว (Exact)</span>
               </button>
             </div>
@@ -125,7 +125,7 @@
                 :title="filters.mode === 'semantic' ? 'โหมด AI Semantic Search (คลิกเพื่อสลับเป็นตรงตัว)' : 'โหมดตรงตัว (คลิกเพื่อสลับเป็น AI)'"
                 class="mr-1.5 my-1 px-3 py-1 rounded-xl bg-slate-800 hover:bg-purple-900/90 border border-slate-700 text-slate-200 hover:text-white text-[11px] font-bold transition-all flex items-center gap-1 shrink-0"
               >
-                <span>{{ filters.mode === 'semantic' ? 'โหมด AI ➔' : 'โหมด ตรงตัว 🔍' }}</span>
+                <span>{{ filters.mode === 'semantic' ? 'โหมด AI' : 'โหมด ตรงตัว' }}</span>
               </button>
             </div>
 
@@ -138,7 +138,7 @@
               <div v-if="matchingProjects.length > 0" class="p-2 space-y-1 bg-purple-950/20">
                 <div class="text-[10px] font-bold text-emerald-400 px-2.5 py-1 flex items-center justify-between">
                   <span class="flex items-center gap-1.5">
-                    <span>📄</span>
+                    <svg class="w-3.5 h-3.5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     <span>งานวิจัยที่ตรงกับคำค้นหาทันที (คลิกเพื่อเปิดอ่าน):</span>
                   </span>
                   <span class="text-[10px] text-slate-400 font-normal">พบ {{ matchingProjects.length }} เรื่อง</span>
@@ -153,11 +153,11 @@
                   <div class="flex items-start justify-between gap-2">
                     <div class="space-y-0.5 flex-1">
                       <div class="font-bold text-white group-hover:text-purple-300 text-xs line-clamp-1 flex items-center gap-1.5">
-                        <span class="text-sm">📑</span>
+                        <svg class="w-3.5 h-3.5 text-purple-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                         <span>{{ paper.title_th }}</span>
                       </div>
                       <div class="text-[10px] text-slate-400 line-clamp-1 flex items-center gap-2">
-                        <span>👤 {{ paper.authors }}</span>
+                        <span>{{ paper.authors }}</span>
                         <span>•</span>
                         <span>{{ paper.faculty_name || 'มรภ.สุรินทร์' }}</span>
                         <span>•</span>
@@ -165,7 +165,7 @@
                       </div>
                     </div>
                     <span class="text-[10px] text-purple-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5 shrink-0 font-bold bg-purple-950/80 px-2 py-0.5 rounded-md border border-purple-800">
-                      เปิดอ่าน ➔
+                      เปิดอ่าน &rarr;
                     </span>
                   </div>
                 </router-link>
@@ -174,7 +174,7 @@
               <!-- 2. Predictive Search Keywords (เหมือนในรูปเป๊ะ เช่น 🔍 พดด้วง / 🔍 พด.1) -->
               <div v-if="filteredSuggestions.length > 0" class="p-2 space-y-0.5">
                 <div class="text-[10px] font-bold text-slate-400 px-2.5 py-1 flex items-center gap-1">
-                  <span>🔍</span>
+                  <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                   <span>คำแนะนำการค้นหา:</span>
                 </div>
                 <button
@@ -184,7 +184,7 @@
                   class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 hover:text-white text-xs flex items-center justify-between transition-colors group"
                 >
                   <span class="flex items-center gap-2">
-                    <span class="text-slate-400 text-xs">🔍</span>
+                    <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     <span class="font-medium group-hover:text-purple-300">{{ item }}</span>
                   </span>
                   <span class="text-[10px] text-slate-500 group-hover:text-slate-300">ค้นหา ↵</span>
@@ -195,7 +195,7 @@
               <div v-if="recentSearches.length > 0" class="p-2 space-y-1">
                 <div class="text-[10px] font-bold text-slate-400 px-2.5 py-1 flex items-center justify-between">
                   <span class="flex items-center gap-1">
-                    <span>🕒</span>
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>ประวัติการค้นหาล่าสุด:</span>
                   </span>
                   <button @click="clearRecentSearches" class="text-[10px] text-rose-400 hover:underline">
@@ -226,11 +226,11 @@
               class="w-full text-xs px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-purple-500 focus:bg-white dark:focus:bg-slate-800 transition-all text-slate-800 dark:text-white"
             >
               <option value="">ทุกประเภทเอกสาร</option>
-              <option value="THESIS">🎓 วิทยานิพนธ์ (ระดับบัณฑิตศึกษา)</option>
-              <option value="SENIOR_PROJECT">💻 โปรเจกต์จบ (ปริญญาตรี)</option>
-              <option value="INDEPENDENT_STUDY">📖 การค้นคว้าอิสระ (IS)</option>
-              <option value="RESEARCH_ARTICLE">📑 บทความวิจัย / ผลงานตีพิมพ์</option>
-              <option value="RESEARCH_REPORT">🏢 รายงานการวิจัยสถาบัน</option>
+              <option value="THESIS">วิทยานิพนธ์ (ระดับบัณฑิตศึกษา)</option>
+              <option value="SENIOR_PROJECT">โปรเจกต์จบ (ปริญญาตรี)</option>
+              <option value="INDEPENDENT_STUDY">การค้นคว้าอิสระ (IS)</option>
+              <option value="RESEARCH_ARTICLE">บทความวิจัย / ผลงานตีพิมพ์</option>
+              <option value="RESEARCH_REPORT">รายงานการวิจัยสถาบัน</option>
             </select>
           </div>
 
@@ -290,11 +290,11 @@
               @change="onFilterChange"
               class="w-full text-xs px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-purple-500 focus:bg-white dark:focus:bg-slate-800 transition-all text-slate-800 dark:text-white"
             >
-              <option value="newest">⚡ อัปเดตล่าสุด</option>
-              <option value="relevance">⭐ ความตรงใจ AI (Relevance)</option>
-              <option value="popular">🔥 ยอดเข้าชมสูงสุด</option>
-              <option value="downloads">📥 ยอดดาวน์โหลดสูงสุด</option>
-              <option value="year">📅 ปีพิมพ์ล่าสุด</option>
+              <option value="newest">อัปเดตล่าสุด</option>
+              <option value="relevance">ความตรงใจ AI (Relevance)</option>
+              <option value="popular">ยอดเข้าชมสูงสุด</option>
+              <option value="downloads">ยอดดาวน์โหลดสูงสุด</option>
+              <option value="year">ปีพิมพ์ล่าสุด</option>
             </select>
           </div>
         </div>
@@ -322,7 +322,7 @@
                 @click="viewMode = 'grouped'"
                 :class="['px-3 py-1.5 rounded-lg transition-all', viewMode === 'grouped' ? 'bg-white dark:bg-purple-900 text-purple-900 dark:text-white shadow-xs' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white']"
               >
-                📑 แยกตามประเภท
+                แยกตามประเภท
               </button>
               <button
                 @click="viewMode = 'grid'"
@@ -386,7 +386,7 @@
             <!-- Section Header -->
             <div class="flex items-center justify-between border-b border-purple-100 dark:border-purple-900/50 pb-2">
               <div class="flex items-center gap-2">
-                <span class="text-xl">{{ group.icon }}</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-600 shrink-0"></span>
                 <h2 class="text-base font-black text-slate-900 dark:text-white">{{ group.title }}</h2>
                 <span class="px-2.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-200 font-bold text-xs border border-purple-200 dark:border-purple-800">
                   {{ group.projects.length }} เรื่อง
@@ -417,8 +417,8 @@
 
         <!-- Empty State -->
         <div v-else class="text-center py-16 bg-white dark:bg-slate-900/90 rounded-3xl border border-purple-100 dark:border-purple-900/50 p-8 space-y-4 shadow-xs">
-          <div class="w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-300 mx-auto flex items-center justify-center text-2xl font-bold">
-            🔍
+          <div class="w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-300 mx-auto flex items-center justify-center font-bold">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           </div>
           <h3 class="text-base font-bold text-slate-800 dark:text-white">ไม่พบข้อมูลงานวิจัยที่ตรงกับเงื่อนไข</h3>
           <p class="text-xs text-slate-500 dark:text-slate-300 max-w-md mx-auto">
@@ -450,12 +450,12 @@ const showSuggestions = ref(false);
 const searchContainerRef = ref(null);
 
 const documentTypeOptions = [
-  { value: '', label: 'ทุกประเภทเอกสาร', icon: '📚' },
-  { value: 'THESIS', label: 'วิทยานิพนธ์', icon: '🎓' },
-  { value: 'SENIOR_PROJECT', label: 'โปรเจกต์จบ (ป.ตรี)', icon: '💻' },
-  { value: 'INDEPENDENT_STUDY', label: 'การค้นคว้าอิสระ (IS)', icon: '📖' },
-  { value: 'RESEARCH_ARTICLE', label: 'บทความวิจัย', icon: '📑' },
-  { value: 'RESEARCH_REPORT', label: 'รายงานวิจัยสถาบัน', icon: '🏢' }
+  { value: '', label: 'ทุกประเภทเอกสาร', icon: '' },
+  { value: 'THESIS', label: 'วิทยานิพนธ์', icon: '' },
+  { value: 'SENIOR_PROJECT', label: 'โปรเจกต์จบ (ป.ตรี)', icon: '' },
+  { value: 'INDEPENDENT_STUDY', label: 'การค้นคว้าอิสระ (IS)', icon: '' },
+  { value: 'RESEARCH_ARTICLE', label: 'บทความวิจัย', icon: '' },
+  { value: 'RESEARCH_REPORT', label: 'รายงานวิจัยสถาบัน', icon: '' }
 ];
 
 const filters = reactive({
@@ -581,11 +581,11 @@ const getDocTypeLabel = (type) => {
 // Group projects by category
 const groupedProjects = computed(() => {
   const groupsDef = [
-    { type: 'THESIS', title: 'วิทยานิพนธ์ (ระดับบัณฑิตศึกษา ป.โท/ป.เอก)', icon: '🎓', desc: 'Master & Doctoral Theses' },
-    { type: 'SENIOR_PROJECT', title: 'โครงงานวิจัยโปรเจกต์จบ (ระดับปริญญาตรี)', icon: '💻', desc: 'Undergraduate Senior Projects' },
-    { type: 'INDEPENDENT_STUDY', title: 'การศึกษาค้นคว้าอิสระ (IS)', icon: '📖', desc: 'Independent Studies' },
-    { type: 'RESEARCH_ARTICLE', title: 'บทความวิจัยและผลงานตีพิมพ์ทางวิชาการ', icon: '📑', desc: 'Journal & Conference Articles' },
-    { type: 'RESEARCH_REPORT', title: 'รายงานการวิจัยฉบับสมบูรณ์ / ทุนวิจัยสถาบัน', icon: '🏢', desc: 'Institutional Research Reports' }
+    { type: 'THESIS', title: 'วิทยานิพนธ์ (ระดับบัณฑิตศึกษา ป.โท/ป.เอก)', icon: '', desc: 'Master & Doctoral Theses' },
+    { type: 'SENIOR_PROJECT', title: 'โครงงานวิจัยโปรเจกต์จบ (ระดับปริญญาตรี)', icon: '', desc: 'Undergraduate Senior Projects' },
+    { type: 'INDEPENDENT_STUDY', title: 'การศึกษาค้นคว้าอิสระ (IS)', icon: '', desc: 'Independent Studies' },
+    { type: 'RESEARCH_ARTICLE', title: 'บทความวิจัยและผลงานตีพิมพ์ทางวิชาการ', icon: '', desc: 'Journal & Conference Articles' },
+    { type: 'RESEARCH_REPORT', title: 'รายงานการวิจัยฉบับสมบูรณ์ / ทุนวิจัยสถาบัน', icon: '', desc: 'Institutional Research Reports' }
   ];
 
   const result = [];

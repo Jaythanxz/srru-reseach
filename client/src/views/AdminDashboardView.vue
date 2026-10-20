@@ -138,7 +138,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-purple-900/40 pb-4">
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-xl">📈</span>
+            <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
             <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">
               การคาดการณ์แนวโน้มงานวิจัย & Heatmap การเติบโต (Research Trend Forecasting)
             </h3>
@@ -202,7 +202,7 @@
           @click="quickLoginAdmin"
           class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
         >
-          <span>🔐 สลับเป็นสิทธิ์ ADMIN ทันที (1-Click)</span>
+          <span>สลับเป็นสิทธิ์ ADMIN ทันที (1-Click)</span>
         </button>
       </div>
       <div class="p-6 border-b border-slate-100 dark:border-purple-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -279,7 +279,7 @@
                   :to="'/projects/' + p.project_id"
                   class="px-2.5 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 hover:bg-purple-100 font-bold text-xs inline-flex items-center gap-1 transition-colors"
                 >
-                  👁️ ดู
+                  ดูรายละเอียด
                 </router-link>
                 <button
                   @click="handleDeleteProject(p.project_id, p.title_th)"
@@ -288,7 +288,7 @@
                   title="ลบผลงานวิจัยนี้ออกจากระบบ"
                 >
                   <span v-if="isDeletingProject === p.project_id">กำลังลบ...</span>
-                  <span v-else>🗑️ ลบ</span>
+                  <span v-else>ลบ</span>
                 </button>
               </td>
             </tr>
@@ -486,7 +486,7 @@ const filteredProjects = computed(() => {
 const quickLoginAdmin = async () => {
   try {
     await authStore.login({ username: 'admin', password: 'password123' });
-    alert('✅ เข้าสู่ระบบในฐานะ ผู้ดูแลระบบ (ADMIN) เรียบร้อยแล้ว สามารถกดลบผลงานวิจัยได้ทันที');
+    alert('เข้าสู่ระบบในฐานะ ผู้ดูแลระบบ (ADMIN) เรียบร้อยแล้ว สามารถกดลบผลงานวิจัยได้ทันที');
     await loadProjects();
     await loadAllDashboardData();
   } catch (err) {
@@ -503,19 +503,19 @@ const handleDeleteProject = async (projectId, title) => {
     }
   }
 
-  if (!confirm(`⚠️ ยืนยันการลบผลงานวิจัย:\n"${title}"\n\nคำเตือน: เมื่อลบแล้ว ข้อมูลผลงานและไฟล์ PDF จะถูกลบออกจากคลังวิจัยอย่างถาวร ยืนยันที่จะลบหรือไม่?`)) {
+  if (!confirm(`ยืนยันการลบผลงานวิจัย:\n"${title}"\n\nคำเตือน: เมื่อลบแล้ว ข้อมูลผลงานและไฟล์ PDF จะถูกลบออกจากคลังวิจัยอย่างถาวร ยืนยันที่จะลบหรือไม่?`)) {
     return;
   }
   try {
     isDeletingProject.value = projectId;
     const res = await api.delete(`/projects/${projectId}`);
     if (res.success) {
-      alert('✅ ลบผลงานวิจัยออกจากระบบเรียบร้อยแล้ว');
+      alert('ลบผลงานวิจัยออกจากระบบเรียบร้อยแล้ว');
       await loadProjects();
       await loadAllDashboardData();
     }
   } catch (err) {
-    alert(`❌ เกิดข้อผิดพลาด: ${err?.message || 'ไม่สามารถลบผลงานได้'}`);
+    alert(`เกิดข้อผิดพลาด: ${err?.message || 'ไม่สามารถลบผลงานได้'}`);
   } finally {
     isDeletingProject.value = null;
   }
@@ -525,7 +525,7 @@ const researchClusters = ref([
   {
     id: 1,
     name: 'Smart Agri & ข้าวหอมมะลิ AI',
-    icon: '🌾',
+    icon: '',
     growthRate: 38,
     y2022: 4,
     y2023: 7,
@@ -536,7 +536,7 @@ const researchClusters = ref([
   {
     id: 2,
     name: 'หัตถกรรมผ้าไหม & เศรษฐกิจสร้างสรรค์',
-    icon: '🧵',
+    icon: '',
     growthRate: 24,
     y2022: 3,
     y2023: 5,
@@ -547,7 +547,7 @@ const researchClusters = ref([
   {
     id: 3,
     name: 'AI, Data Science & Thai NLP',
-    icon: '💻',
+    icon: '',
     growthRate: 45,
     y2022: 2,
     y2023: 6,
@@ -558,7 +558,7 @@ const researchClusters = ref([
   {
     id: 4,
     name: 'BCG Economy & พลังงานทดแทน',
-    icon: '🌿',
+    icon: '',
     growthRate: 32,
     y2022: 2,
     y2023: 4,
@@ -569,7 +569,7 @@ const researchClusters = ref([
   {
     id: 5,
     name: 'สาธารณสุขชุมชน & สังคมสูงวัย',
-    icon: '🏥',
+    icon: '',
     growthRate: 19,
     y2022: 3,
     y2023: 4,

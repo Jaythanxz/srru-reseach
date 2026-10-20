@@ -4,7 +4,7 @@
     <div class="bg-gradient-to-r from-purple-100/90 via-white to-emerald-50/90 dark:from-[#1f103d] dark:via-[#140b29] dark:to-[#081f18] rounded-3xl p-6 sm:p-8 border border-purple-100 dark:border-purple-800/40 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors">
       <div class="space-y-2">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-200/60 dark:bg-purple-950/80 text-purple-900 dark:text-purple-200 text-xs font-bold border border-purple-300/60 dark:border-purple-800">
-          <span>🕸️ Academic Knowledge Network</span>
+          <span>Academic Knowledge Network</span>
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -56,10 +56,10 @@
           class="text-xs px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-purple-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-purple-500"
         >
           <option value="ALL">แสดงทุกประเภทโหนด</option>
-          <option value="faculty">🏛️ เฉพาะคณะ (Faculty Hubs)</option>
-          <option value="concept">🧠 เฉพาะกลุ่มเทคโนโลยี (Concepts)</option>
-          <option value="advisor">👨‍🏫 เฉพาะอาจารย์ที่ปรึกษา (Advisors)</option>
-          <option value="project">📄 เฉพาะผลงานวิจัย (Projects)</option>
+          <option value="faculty">เฉพาะคณะ (Faculty Hubs)</option>
+          <option value="concept">เฉพาะกลุ่มเทคโนโลยี (Concepts)</option>
+          <option value="advisor">เฉพาะอาจารย์ที่ปรึกษา (Advisors)</option>
+          <option value="project">เฉพาะผลงานวิจัย (Projects)</option>
         </select>
       </div>
 
@@ -89,7 +89,7 @@
           @click="fetchGraphData"
           class="px-3 py-1.5 rounded-xl bg-purple-700 text-white text-xs font-bold hover:bg-purple-600 shadow-xs flex items-center gap-1"
         >
-          <span>🔄 รีเฟรช</span>
+          <span>รีเฟรช</span>
         </button>
       </div>
     </div>
@@ -213,7 +213,7 @@
                   font-weight="bold"
                   pointer-events="none"
                 >
-                  {{ node.type === 'faculty' ? '🏛️' : node.type === 'concept' ? '💡' : node.type === 'advisor' ? '👨‍🏫' : '📄' }}
+                  <span class='w-2 h-2 rounded-full inline-block mr-1' :class="node.type === 'faculty' ? 'bg-purple-500' : node.type === 'concept' ? 'bg-emerald-500' : node.type === 'advisor' ? 'bg-indigo-500' : 'bg-slate-400'"></span>
                 </text>
 
                 <!-- Node Label -->
@@ -310,7 +310,7 @@
 
           <!-- Empty Inspector State -->
           <div v-else class="text-center py-8 space-y-2 text-slate-400">
-            <div class="text-3xl">🎯</div>
+            <svg class="w-10 h-10 text-purple-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <p class="text-xs">คลิกเลือกโหนดใดก็ได้บนกราฟิกเพื่อตรวจสอบรายละเอียด</p>
           </div>
         </div>
@@ -318,7 +318,7 @@
         <!-- Academic Knowledge Summary Box -->
         <div class="bg-gradient-to-br from-purple-900 to-slate-900 text-white rounded-3xl p-5 border border-purple-800/60 shadow-md space-y-3">
           <div class="flex items-center gap-2 font-bold text-xs text-purple-200">
-            <span>✨</span>
+            
             <span>AI Knowledge Graph Synthesis</span>
           </div>
           <p class="text-[11px] text-purple-100/90 leading-relaxed font-light">

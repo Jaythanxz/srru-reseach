@@ -20,7 +20,7 @@
           <div class="text-xs font-bold text-slate-400 dark:text-slate-500">สถานะ AI Engine</div>
           <div class="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5 flex items-center gap-1 justify-center">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>⚡ GEMINI LLM • Thai NLP</span>
+            <span>GEMINI LLM • Thai NLP</span>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
           class="px-8 py-3 rounded-2xl bg-gradient-to-r from-purple-800 via-purple-700 to-emerald-600 hover:from-purple-700 hover:to-emerald-500 text-white text-xs sm:text-sm font-black transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center gap-2"
         >
           <span v-if="loading" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-          <span v-else>✨</span>
+          <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
           <span>{{ loading ? 'AI กำลังวิเคราะห์และสังเคราะห์หัวข้อ...' : 'สังเคราะห์ 3 ร่างหัวข้อวิจัยด้วย AI' }}</span>
         </button>
       </div>
@@ -103,7 +103,7 @@
     <div v-if="proposals.length > 0" class="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
       <div class="flex items-center justify-between border-b border-purple-100 dark:border-purple-900/50 pb-3">
         <div class="flex items-center gap-2">
-          <span class="text-xl">💡</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
           <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">
             ร่างโครงร่างวิจัยแนะนำโดย AI ({{ proposals.length }} ข้อเสนอ)
           </h2>
@@ -130,7 +130,7 @@
                 {{ p.degree_type }}
               </span>
               <span v-if="p.source === 'gemini'" class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-bold text-[10px] border border-emerald-300 dark:border-emerald-700">
-                ⚡ Gemini LLM
+                Gemini LLM
               </span>
             </div>
 
@@ -153,7 +153,7 @@
           <!-- Objectives (3 Bullets) -->
           <div class="space-y-2 bg-purple-50/40 dark:bg-purple-950/40 p-4 sm:p-5 rounded-2xl border border-purple-100/80 dark:border-purple-900/40 text-xs">
             <div class="font-bold text-purple-950 dark:text-purple-200 flex items-center gap-1.5">
-              <span>🎯</span>
+              <svg class="w-4 h-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span>วัตถุประสงค์การวิจัย (Objectives):</span>
             </div>
             <ul class="space-y-1.5 pl-5 list-disc text-slate-700 dark:text-slate-200 leading-relaxed font-normal">
@@ -166,15 +166,15 @@
           <!-- Technical Specs & Advisor Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
-              <span class="text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase block">⚙️ โมเดล / เทคโนโลยี:</span>
+              <span class="text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase block">โมเดล / เทคโนโลยี:</span>
               <span class="font-bold text-slate-800 dark:text-slate-100">{{ p.recommended_tech }}</span>
             </div>
             <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
-              <span class="text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase block">👥 แหล่งข้อมูล & กลุ่มตัวอย่าง:</span>
+              <span class="text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase block">แหล่งข้อมูล & กลุ่มตัวอย่าง:</span>
               <span class="text-slate-700 dark:text-slate-200">{{ p.dataset_plan }}</span>
             </div>
             <div class="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 space-y-1">
-              <span class="text-emerald-700 dark:text-emerald-300 font-bold text-[10px] uppercase block">👨‍🏫 อาจารย์ที่ปรึกษาแนะนำ:</span>
+              <span class="text-emerald-700 dark:text-emerald-300 font-bold text-[10px] uppercase block">อาจารย์ที่ปรึกษาแนะนำ:</span>
               <span class="font-bold text-emerald-950 dark:text-emerald-200">{{ p.suggested_advisor }}</span>
             </div>
           </div>
@@ -185,7 +185,7 @@
               @click="copyProposal(p)"
               class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold transition-colors flex items-center gap-1.5"
             >
-              <span>{{ copiedId === p.id ? '✓ คัดลอกโครงร่างแล้ว!' : '📋 คัดลอกโครงร่างวิจัย' }}</span>
+              <span>{{ copiedId === p.id ? 'คัดลอกโครงร่างแล้ว!' : 'คัดลอกโครงร่างวิจัย' }}</span>
             </button>
 
             <router-link
@@ -219,10 +219,10 @@ const loading = ref(false);
 const copiedId = ref(null);
 
 const quickIdeas = [
-  { icon: '🌾', label: 'ข้าวหอมมะลิ & โดรนเกษตรอัจฉริยะ', faculty_id: '2', kw: 'ข้าวหอมมะลิ ตรวจจับโรคพืช โดรน' },
-  { icon: '🧵', label: 'ผ้าไหมสุรินทร์ & AR การตลาดเสมือนจริง', faculty_id: '3', kw: 'ผ้าไหมสุรินทร์ การตลาดดิจิทัล AR' },
-  { icon: '🤖', label: 'Thai NLP & RAG คลังความรู้วิชาการ', faculty_id: '1', kw: 'ปัญญาประดิษฐ์ Thai NLP RAG' },
-  { icon: '🏥', label: 'IoT & AI สุขภาพผู้สูงอายุชนบท', faculty_id: '6', kw: 'IoT ผู้สูงอายุ Computer Vision' }
+  { icon: '', label: 'ข้าวหอมมะลิ & โดรนเกษตรอัจฉริยะ', faculty_id: '2', kw: 'ข้าวหอมมะลิ ตรวจจับโรคพืช โดรน' },
+  { icon: '', label: 'ผ้าไหมสุรินทร์ & AR การตลาดเสมือนจริง', faculty_id: '3', kw: 'ผ้าไหมสุรินทร์ การตลาดดิจิทัล AR' },
+  { icon: '', label: 'Thai NLP & RAG คลังความรู้วิชาการ', faculty_id: '1', kw: 'ปัญญาประดิษฐ์ Thai NLP RAG' },
+  { icon: '', label: 'IoT & AI สุขภาพผู้สูงอายุชนบท', faculty_id: '6', kw: 'IoT ผู้สูงอายุ Computer Vision' }
 ];
 
 const selectQuickIdea = (idea) => {

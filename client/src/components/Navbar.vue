@@ -143,7 +143,8 @@
                         notif.type === 'REJECTED' ? 'bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-200' : 'bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-200'
                       ]"
                     >
-                      <span>{{ notif.type === 'REJECTED' ? '⚠️ ส่งกลับแก้ไข' : '✅ อนุมัติแล้ว' }}</span>
+                      <span class="w-1.5 h-1.5 rounded-full" :class="notif.type === 'REJECTED' ? 'bg-rose-500' : 'bg-emerald-500'"></span>
+                      <span>{{ notif.type === 'REJECTED' ? 'ส่งกลับแก้ไข' : 'อนุมัติแล้ว' }}</span>
                     </span>
                     <span class="text-[10px] text-slate-400">
                       {{ formatRelativeTime(notif.time) }}

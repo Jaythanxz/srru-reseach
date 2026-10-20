@@ -79,7 +79,7 @@
                       </div>
                     </div>
                     <span class="text-[10px] text-purple-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5 shrink-0 font-bold bg-purple-950/80 px-2 py-0.5 rounded-md border border-purple-800">
-                      เปิดอ่าน ➔
+                      เปิดอ่าน &rarr;
                     </span>
                   </div>
                 </router-link>
@@ -318,8 +318,10 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-purple-100/80 dark:border-purple-800/60 shadow-2xs space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 flex items-center justify-center font-bold text-xl">
-              🧠
+            <div class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 flex items-center justify-center font-bold">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </div>
             <h3 class="text-base font-bold text-slate-900 dark:text-white">Semantic Vector Search</h3>
             <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-light">
@@ -328,8 +330,10 @@
           </div>
 
           <div class="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-purple-100/80 dark:border-purple-800/60 shadow-2xs space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 flex items-center justify-center font-bold text-xl">
-              💬
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
             </div>
             <h3 class="text-base font-bold text-slate-900 dark:text-white">AI Chat with PDF (RAG)</h3>
             <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-light">
@@ -338,8 +342,10 @@
           </div>
 
           <div class="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-purple-100/80 dark:border-purple-800/60 shadow-2xs space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 flex items-center justify-center font-bold text-xl">
-              ⚡
+            <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
             <h3 class="text-base font-bold text-slate-900 dark:text-white">Hybrid Recommendation</h3>
             <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-light">
